@@ -1,4 +1,4 @@
 package viewModel;
 
-public class IViewModel {
+public interface IViewModel {
 }

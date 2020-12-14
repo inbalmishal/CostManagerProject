@@ -92,7 +92,7 @@ public class DerbyDBModel implements IModel{
         //Check if the category already exist.
         if(checkIfCategoryExists(item.getCategoryName())){
             CostManagerException e=new CostManagerException("This category already exists");
-            throw e;}
+            throw e; }
         try {
             //Connect to the DB.
             Class.forName(DRIVER);
@@ -341,7 +341,7 @@ public class DerbyDBModel implements IModel{
             } catch (SQLException e) {
                 //Check if the exception throw because the tables already exist or because something else.
                 if (!e.getSQLState().equals("X0Y32")){
-                     e.printStackTrace();
+                     throw e;
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {

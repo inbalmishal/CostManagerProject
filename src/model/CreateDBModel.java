@@ -12,7 +12,7 @@ public class CreateDBModel {
        // setAndCheckCategory();
         close("Category");
         close("InOutCome");
-        // checkCategory();
+         //checkCategory();
        // checkInOutCome();
     }
 
