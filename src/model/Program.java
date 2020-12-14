@@ -12,6 +12,7 @@ public class Program {
         Category category = new Category("food");
         CostOrIncome item = new CostOrIncome(5, "sport", 345, date, category);
         CreateDB cdb=new CreateDB();
+        db.createDB();
 
 
     }

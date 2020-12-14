@@ -13,4 +13,5 @@ public interface IModel {
     public double getTheBalance() throws CostManagerException;
     public ArrayList<CostOrIncome> getAllCostsAndIncomes() throws CostManagerException;
     public ArrayList<Category> getAllCategories() throws CostManagerException;
+    public void createDB()throws CostManagerException;
 }

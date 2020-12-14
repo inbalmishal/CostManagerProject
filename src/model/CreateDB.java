@@ -11,8 +11,8 @@ public class CreateDB {
         // setAndCheckInOutCome();
        // setAndCheckCategory();
         //close("Category");
-       // close("InOutCome");
-        // checkCategory();
+        //close("InOutCome");
+         //checkCategory();
         // checkInOutCome();
 
     }
