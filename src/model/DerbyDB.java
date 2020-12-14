@@ -141,6 +141,10 @@ public class DerbyDB  implements IModel{
 
     @Override
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) throws CostManagerException {
+        if(from.after(to)) {
+            CostManagerException e=new CostManagerException("The date 'from' come after the date 'to'");
+            throw e;
+        }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomesBetweenDates(from, to);
         ArrayList<CostOrIncome> result = new ArrayList<>();
         //Insert to array result every cost from the items array.
@@ -155,6 +159,10 @@ public class DerbyDB  implements IModel{
 
     @Override
     public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to) throws CostManagerException {
+        if(from.after(to)) {
+            CostManagerException e=new CostManagerException("The date 'from' come after the date 'to'");
+            throw e;
+        }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomesBetweenDates(from, to);
         ArrayList<CostOrIncome> result = new ArrayList<>();
         //Insert to array result every income from the items array.
@@ -169,6 +177,10 @@ public class DerbyDB  implements IModel{
 
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException {
+        if(from.after(to)) {
+            CostManagerException e=new CostManagerException("The date 'from' come after the date 'to'");
+            throw e;
+        }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomes();
         ArrayList<CostOrIncome> result = new ArrayList<>();
         //Check every item in items array if the date between from and to, if yes put inside the result array.
