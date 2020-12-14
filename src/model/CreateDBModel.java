@@ -1,20 +1,19 @@
 package model;
 import java.sql.*;
 
-public class CreateDB {
+public class CreateDBModel {
     public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     public static final String JDBC_URL = "jdbc:derby:CostDB;create=true";
 
     public static void main(String[] arg) { //right now there is no table
-         //createTableCategory();
-         //createTableInOutCome();
-        // setAndCheckInOutCome();
+       //  createTableCategory();
+        // createTableInOutCome();
+       //  setAndCheckInOutCome();
        // setAndCheckCategory();
-        //close("Category");
-        //close("InOutCome");
-         //checkCategory();
-        // checkInOutCome();
-
+        close("Category");
+        close("InOutCome");
+        // checkCategory();
+       // checkInOutCome();
     }
 
     public static void close(String TableName){

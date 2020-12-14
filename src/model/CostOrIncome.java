@@ -8,9 +8,18 @@ public class CostOrIncome {
     private Date date;
     private Category category;
 
-
     public CostOrIncome(int id, String description, double cost, Date date, Category category) {
         setId(id);
+        setDescription(description);
+        setCost(cost);
+        setDate(date);
+        setCategory(category);
+    }
+
+    /*this constructor doesn't get id because the id will be determined to
+     the max id in the table when the item will be added to the table. */
+    public CostOrIncome(String description, double cost, Date date, Category category) {
+        setId(0);
         setDescription(description);
         setCost(cost);
         setDate(date);

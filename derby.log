@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Fri Dec 11 21:46:45 IST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-5357-641e-00000f305ee8 
-on database directory C:\Users\inbal\Desktop\CostManagerProject\CostDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@78308db1 
+Mon Dec 14 21:18:19 IST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-62b0-72df-00000f280530 
+on database directory C:\Users\inbal\Desktop\CostManagerProject\CostManagerProject\CostDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@78308db1 
 Loaded from file:/C:/Users/inbal/Desktop/inter/derby/lib/derby.jar
 java.vendor=JetBrains s.r.o
 java.runtime.version=11.0.5+10-b520.38
-user.dir=C:\Users\inbal\Desktop\CostManagerProject
+user.dir=C:\Users\inbal\Desktop\CostManagerProject\CostManagerProject
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

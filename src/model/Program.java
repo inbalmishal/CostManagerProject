@@ -1,18 +1,17 @@
 package model;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 public class Program {
     public static void main(String arg[]) throws CostManagerException {
-        DerbyDB db = new DerbyDB();
+        DerbyDBModel db = new DerbyDBModel();
+        db.createDB();
         Date date = new Date(100,4,12);
         Date date2 = new Date(130,8,12);
         Category category = new Category("food");
-        CostOrIncome item = new CostOrIncome(5, "sport", 345, date, category);
-        CreateDB cdb=new CreateDB();
-        db.createDB();
+        CostOrIncome item = new CostOrIncome("sport", 345, date, category);
+        db.addCostOrIncome(item);
+        db.addNewCategory(category);
 
 
     }

@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DerbyDB  implements IModel{
+public class DerbyDBModel implements IModel{
     public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     public static final String JDBC_URL = "jdbc:derby:CostDB;create=true";
 
@@ -18,6 +18,8 @@ public class DerbyDB  implements IModel{
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
+            //check what is the max id in the table and set this id for the new item
+            item.setId(maxId()+1);
             //Insert cost or income to the DB.
             statement.execute("insert into InOutCome(id, description, cost, date, category) values ("+ item.getId()+", '"+
                     item.getDescription()+"', "+item.getCost()+", '"+ item.getDate() +"', '"+item.getCategory().getCategoryName()+"')");
@@ -30,6 +32,32 @@ public class DerbyDB  implements IModel{
             if(connection!=null) try{connection.close();}catch(Exception e){}
             if(rs!=null) try{rs.close();}catch(Exception e){}
         }
+    }
+
+    private int maxId(){
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        int max=0;
+        try {
+            //Connect to the DB.
+            Class.forName(DRIVER);
+            connection = DriverManager.getConnection(JDBC_URL);
+            statement = connection.createStatement();
+            //check what is the max id in the table
+            rs = statement.executeQuery("select COALESCE(max(id),0) AS MaxID from InOutCome");
+            rs.next();
+            max = rs.getInt("MaxID");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally
+        {
+            //Disconnect from the DB.
+            if(statement!=null) try{statement.close();}catch(Exception e){}
+            if(connection!=null) try{connection.close();}catch(Exception e){}
+            if(rs!=null) try{rs.close();}catch(Exception e){}
+        }
+        return max;
     }
 
     @Override
@@ -112,7 +140,6 @@ public class DerbyDB  implements IModel{
             if(rs!=null) try{rs.close();}catch(Exception e){}
         }
         return true;
-
     }
 
     @Override
@@ -120,6 +147,11 @@ public class DerbyDB  implements IModel{
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
+        //Check if the category doesn't exist.
+        if(!checkIfCategoryExists(item.getCategoryName())){
+            CostManagerException e=new CostManagerException("This category not exists");
+            throw e;
+        }
         try {
             //Connect to the DB.
             Class.forName(DRIVER);
@@ -309,12 +341,11 @@ public class DerbyDB  implements IModel{
             } catch (SQLException e) {
                 //Check if the exception throw because the tables already exist or because something else.
                 if (!e.getSQLState().equals("X0Y32")){
-                    throw e;
+                     e.printStackTrace();
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
-
 }
