@@ -55,10 +55,13 @@ public class DerbyDB  implements IModel{
     }
 
     @Override
-    public void addNewCategory(Category item) throws CostManagerException {
+    public  void addNewCategory(Category item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
+        if(checkIfCategoryExists(item.getCategoryName())){
+            CostManagerException e=new CostManagerException("This category already exists");
+            throw e;}
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
@@ -73,6 +76,34 @@ public class DerbyDB  implements IModel{
             if(connection!=null) try{connection.close();}catch(Exception e){}
             if(rs!=null) try{rs.close();}catch(Exception e){}
         }
+    }
+
+    private boolean checkIfCategoryExists(String categoryName) {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            Class.forName(DRIVER);
+            connection = DriverManager.getConnection(JDBC_URL);
+            statement = connection.createStatement();
+            String sql="SELECT * FROM category WHERE name = '"+categoryName+"'";
+            rs = statement.executeQuery(sql);
+            if(rs.next()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(statement!=null) try{statement.close();}catch(Exception e){}
+            if(connection!=null) try{connection.close();}catch(Exception e){}
+            if(rs!=null) try{rs.close();}catch(Exception e){}
+        }
+        return true;
+
     }
 
     @Override
