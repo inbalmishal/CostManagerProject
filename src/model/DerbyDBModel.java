@@ -149,7 +149,7 @@ public class DerbyDBModel implements IModel{
         ResultSet rs = null;
         //Check if the category doesn't exist.
         if(!checkIfCategoryExists(item.getCategoryName())){
-            CostManagerException e=new CostManagerException("This category not exists");
+            CostManagerException e=new CostManagerException("This category doesn't exist");
             throw e;
         }
         try {

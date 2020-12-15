@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddCategoryTest {
+public class AddAndDeleteCategoryTest {
     DerbyDBModel derbyDBModel;
     private final static String MOCK_CATEGORY_EXIST = "food";
     private final static String MOCK_CATEGORY_NOT_EXIST = "lalala";
@@ -29,14 +29,36 @@ public class AddCategoryTest {
         }
     }
 
-    @Test //it work but i think its not good
+    @Test
     public void succeedAddTest() {
         try {
             Category category = new Category(MOCK_CATEGORY_NOT_EXIST);
             derbyDBModel.addNewCategory(category);
             derbyDBModel.deleteCategory(category);
         } catch (CostManagerException e) {
-            fail(e.getMessage());
+            fail("The exception was thrown even though it was not supposed to be thrown");
+        }
+    }
+
+    @Test
+    public void failDeleteTest() {
+        try {
+            Category category = new Category(MOCK_CATEGORY_NOT_EXIST);
+            derbyDBModel.deleteCategory(category);
+            fail("The addition succeed when it should failed");
+        } catch (CostManagerException e) {
+            Assertions.assertEquals("This category doesn't exist", e.getMessage());
+        }
+    }
+
+    @Test
+    public void succeedDeleteTest() {
+        try {
+            Category category = new Category(MOCK_CATEGORY_EXIST);
+            derbyDBModel.deleteCategory(category);
+            derbyDBModel.addNewCategory(category);
+        } catch (CostManagerException e) {
+            fail("The exception was thrown even though it was not supposed to be thrown ");
         }
     }
 }
