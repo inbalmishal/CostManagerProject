@@ -338,6 +338,9 @@ public class DerbyDBModel implements IModel{
                 //Create the tables.
                 statement.execute("create table category(name VARCHAR(255))");
                 statement.execute("create table InOutCome(id int, description VARCHAR(255), cost DOUBLE, date DATE, category VARCHAR(255))");
+                statement.execute("insert into Category values ('Clothes')");
+                statement.execute("insert into Category values ('Food')");
+                statement.execute("insert into Category values ('Maintenance')");
             } catch (SQLException e) {
                 //Check if the exception throw because the tables already exist or because something else.
                 if (!e.getSQLState().equals("X0Y32")){
