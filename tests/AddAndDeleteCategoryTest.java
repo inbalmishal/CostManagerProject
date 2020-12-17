@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AddAndDeleteCategoryTest {
     DerbyDBModel derbyDBModel;
-    private final static String MOCK_CATEGORY_EXIST = "food";
+    private final static String MOCK_CATEGORY_EXIST = "Food";
     private final static String MOCK_CATEGORY_NOT_EXIST = "lalala";
 
     @BeforeEach
