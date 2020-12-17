@@ -8,7 +8,7 @@ public class VProgram {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                SimpleGUI ob = new SimpleGUI();
+                StartFrame ob = new StartFrame();
                 ob.start();
             }
         };

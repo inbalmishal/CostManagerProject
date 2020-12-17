@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Properties;
 
 public class CreateJDatePicker {
-    CreateJDatePicker(){
+    CreateJDatePicker(JFrame frame){
         JDatePickerImpl datePicker;
         SqlDateModel model = new SqlDateModel();
         Properties p = new Properties();
@@ -30,12 +30,14 @@ public class CreateJDatePicker {
                 if(o != null)
                 {
                     Calendar cal = (Calendar) o;
-                    SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-MMM");
                     String strDate = format.format(cal.getTime());
                     return strDate;
                 }
                 return " ";
             }
         });
+        frame.add(datePicker);
+
     }
 }
