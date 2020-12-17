@@ -22,7 +22,7 @@ public class DetailsFrame extends JFrame {
     }
     public void start(){
         frame.setLayout(new FlowLayout());
-        frame.setSize(1000,1000);
+        frame.setSize(1000,800);
         datePickerFrom = new CreateJDatePicker(frame);
         datePickerTo = new CreateJDatePicker(frame);
         frame.add(ok);

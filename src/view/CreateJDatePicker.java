@@ -30,7 +30,7 @@ public class CreateJDatePicker {
                 if(o != null)
                 {
                     Calendar cal = (Calendar) o;
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-MMM");
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                     String strDate = format.format(cal.getTime());
                     return strDate;
                 }

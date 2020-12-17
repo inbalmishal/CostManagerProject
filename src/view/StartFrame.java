@@ -23,7 +23,7 @@ public class StartFrame {
     }
     public void start(){
         frame.setLayout(new FlowLayout());
-        frame.setSize(1000,1000);
+        frame.setSize(1000,800);
         frame.add(icon);
         frame.add(showMyExpenseIncome);
         frame.add(addNewExpenseIncome);
