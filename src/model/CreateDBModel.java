@@ -6,13 +6,13 @@ public class CreateDBModel {
     public static final String JDBC_URL = "jdbc:derby:CostDB;create=true";
 
     public static void main(String[] arg) { //right now there is no table
-      //   createTableCategory();
-       //  createTableInOutCome();
-       //  setAndCheckInOutCome();
-       // setAndCheckCategory();
-      //  close("Category");
+         //createTableCategory();
+        // createTableInOutCome();
+        // setAndCheckInOutCome();
+        //setAndCheckCategory();
+       // close("Category");
        // close("InOutCome");
-         //checkCategory();
+         checkCategory();
         checkInOutCome();
     }
 

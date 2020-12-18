@@ -9,8 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AddAndDeleteCategoryTest {
     DerbyDBModel derbyDBModel;
-    private final static String MOCK_CATEGORY_EXIST = "Food";
+    private final static String MOCK_CATEGORY_EXIST = "food";
     private final static String MOCK_CATEGORY_NOT_EXIST = "lalala";
+    private final static String MOCK_CATEGORY_EMPTY = "";
 
     @BeforeEach
     public void setUp()
@@ -19,13 +20,24 @@ public class AddAndDeleteCategoryTest {
     }
 
     @Test
-    public void failAddTest() {
+    public void failAddExistTest() { //the category already exists
         try {
             Category category = new Category(MOCK_CATEGORY_EXIST);
             derbyDBModel.addNewCategory(category);
             fail("The addition succeed when it should failed");
         } catch (CostManagerException e) {
             Assertions.assertEquals("This category already exists", e.getMessage());
+        }
+    }
+
+    @Test
+    public void failAddEmptyTest() { //the category name is empty
+        try {
+            Category category = new Category(MOCK_CATEGORY_EMPTY);
+            derbyDBModel.addNewCategory(category);
+            fail("The addition succeed when it should failed");
+        } catch (CostManagerException e) {
+            Assertions.assertEquals("category must have at least one letter", e.getMessage());
         }
     }
 
