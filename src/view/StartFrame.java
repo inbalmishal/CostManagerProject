@@ -19,7 +19,12 @@ public class StartFrame {
     private double balance;
     public StartFrame() {
         frame = new JFrame("Cost Manager");
-        DerbyDBModel db = new DerbyDBModel();
+        DerbyDBModel db = null;
+        try {
+            db = new DerbyDBModel();
+        } catch (CostManagerException e) {
+            e.printStackTrace();
+        }
         showMyExpenseIncome = new JButton("Show my expense and income");
         addNewExpenseIncome = new JButton("Add new expense or income");
         addNewCategory = new JButton("Add new category");
@@ -54,6 +59,24 @@ public class StartFrame {
         frame.add(panelWest,BorderLayout.WEST);
         panelCenter.add(showBalance,BorderLayout.CENTER);
         frame.add(panelCenter,BorderLayout.CENTER);
+
+
+        addNewExpenseIncome.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                AddCostOrIncomeFrame addCostOrIncomeFrame = new AddCostOrIncomeFrame();
+                addCostOrIncomeFrame.start();
+                frame.dispose();
+            }
+        });
+        addNewCategory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                AddCategoryFrame addCategoryFrame = new AddCategoryFrame();
+                addCategoryFrame.start();
+                frame.dispose();
+            }
+        });
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
