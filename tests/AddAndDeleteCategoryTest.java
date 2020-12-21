@@ -16,7 +16,11 @@ public class AddAndDeleteCategoryTest {
     @BeforeEach
     public void setUp()
     {
-        derbyDBModel = new DerbyDBModel();
+        try {
+            derbyDBModel = new DerbyDBModel();
+        } catch (CostManagerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
