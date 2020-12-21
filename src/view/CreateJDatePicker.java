@@ -13,7 +13,7 @@ import java.util.Properties;
 public class CreateJDatePicker {
     public JDatePickerImpl datePicker;
 
-    CreateJDatePicker(JPanel frame){
+    CreateJDatePicker(JFrame frame){
         SqlDateModel model = new SqlDateModel();
         Properties p = new Properties();
         p.put("text.day","Day");
@@ -39,6 +39,34 @@ public class CreateJDatePicker {
             }
         });
         frame.add(datePicker);
+    }
 
+    CreateJDatePicker(JPanel jPanel){
+        JDatePickerImpl datePicker;
+        SqlDateModel model = new SqlDateModel();
+        Properties p = new Properties();
+        p.put("text.day","Day");
+        p.put("text.month","Month");
+        p.put("text.year","Year");
+        JDatePanelImpl panel = new JDatePanelImpl(model,p);
+        datePicker = new JDatePickerImpl(panel, new JFormattedTextField.AbstractFormatter() {
+            @Override
+            public Object stringToValue(String s) throws ParseException {
+                return null;
+            }
+
+            @Override
+            public String valueToString(Object o) throws ParseException {
+                if(o != null)
+                {
+                    Calendar cal = (Calendar) o;
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                    String strDate = format.format(cal.getTime());
+                    return strDate;
+                }
+                return " ";
+            }
+        });
+        jPanel.add(datePicker);
     }
 }
