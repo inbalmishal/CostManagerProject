@@ -93,6 +93,8 @@ public class DerbyDBModel implements IModel{
         if(checkIfCategoryExists(item.getCategoryName())){
             CostManagerException e=new CostManagerException("This category already exists");
             throw e; }
+        if(item.getCategoryName().length()==0)
+            throw new CostManagerException("category must have at least one letter");
         try {
             //Connect to the DB.
             Class.forName(DRIVER);

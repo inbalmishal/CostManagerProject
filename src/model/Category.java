@@ -14,4 +14,9 @@ public class Category {
     public Category(String categoryName) {
         setCategoryName(categoryName);
     }
+
+    @Override
+    public String toString() {
+        return categoryName;
+    }
 }
