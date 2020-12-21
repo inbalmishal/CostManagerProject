@@ -18,6 +18,7 @@ public class StartFrame {
     private JLabel icon,showBalance,title;
     private double balance;
     public StartFrame() {
+
         frame = new JFrame("Cost Manager");
         DerbyDBModel db = null;
         try {
