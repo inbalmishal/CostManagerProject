@@ -1,5 +1,9 @@
 package view;
 
+
+import model.CostManagerException;
+import model.DerbyDBModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,25 +13,47 @@ import java.awt.event.WindowEvent;
 
 public class StartFrame {
     private JFrame frame;
+    private JPanel panelNorth,panelWest,panelCenter;
     private JButton showMyExpenseIncome,addNewExpenseIncome,addNewCategory;
-    private JCheckBox shekel,dollar,euro;
-    private JTable categories;
-    private JLabel icon;
-    public StartFrame(){
+    private JLabel icon,showBalance,title;
+    private double balance;
+    public StartFrame() {
         frame = new JFrame("Cost Manager");
+        DerbyDBModel db = new DerbyDBModel();
         showMyExpenseIncome = new JButton("Show my expense and income");
         addNewExpenseIncome = new JButton("Add new expense or income");
         addNewCategory = new JButton("Add new category");
-        icon = new JLabel(new ImageIcon("image.png"));
+        icon = new JLabel(new ImageIcon("Image.png"));
+        panelNorth = new JPanel();
+        panelWest = new JPanel();
+        panelCenter = new JPanel();
+        try {
+            balance = db.getTheBalance();
+        } catch (CostManagerException e) {
+            e.printStackTrace();
+        }
+        showBalance = new JLabel("Hey user,\n your balance is :" + balance);
+        title = new JLabel("Cost Manager");
+        title.setFont(new Font("serif",Font.PLAIN,40));
+        showBalance.setFont(new Font("serif",Font.PLAIN,40));
 
     }
     public void start(){
-        frame.setLayout(new FlowLayout());
-        frame.setSize(1000,800);
-        frame.add(icon);
-        frame.add(showMyExpenseIncome);
-        frame.add(addNewExpenseIncome);
-        frame.add(addNewCategory);
+        frame.setLayout(new BorderLayout());
+        frame.setSize(1000,600);
+        panelNorth.setLayout(new GridLayout(1,2));
+        panelNorth.setBackground(Color.white);
+        panelWest.setLayout(new GridLayout(3,1));
+        panelCenter.setLayout(new BorderLayout());
+        panelNorth.add(icon,BorderLayout.WEST);
+        panelNorth.add(title);
+        frame.add(panelNorth,BorderLayout.NORTH);
+        panelWest.add(showMyExpenseIncome);
+        panelWest.add(addNewExpenseIncome);
+        panelWest.add(addNewCategory);
+        frame.add(panelWest,BorderLayout.WEST);
+        panelCenter.add(showBalance,BorderLayout.CENTER);
+        frame.add(panelCenter,BorderLayout.CENTER);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

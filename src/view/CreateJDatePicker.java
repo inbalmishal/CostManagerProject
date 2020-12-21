@@ -11,8 +11,9 @@ import java.util.Calendar;
 import java.util.Properties;
 
 public class CreateJDatePicker {
-    CreateJDatePicker(JFrame frame){
-        JDatePickerImpl datePicker;
+    public JDatePickerImpl datePicker;
+
+    CreateJDatePicker(JPanel frame){
         SqlDateModel model = new SqlDateModel();
         Properties p = new Properties();
         p.put("text.day","Day");
