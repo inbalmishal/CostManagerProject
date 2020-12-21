@@ -40,7 +40,11 @@ public class DetailsFrame extends JFrame {
 
     DetailsFrame() {
         frame = new JFrame("Cost Manager");
-        db = new DerbyDBModel();
+        try {
+            db = new DerbyDBModel();
+        } catch (CostManagerException e) {
+            e.printStackTrace();
+        }
         ok = new JButton("OK");
         homePage = new JButton("Home Page");
         delete = new JButton("Delete");
