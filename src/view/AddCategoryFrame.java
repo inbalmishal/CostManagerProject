@@ -92,7 +92,7 @@ public class AddCategoryFrame extends JFrame {
         add.addActionListener(new ActionListener() { //connect to the VM
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-              /*  DerbyDBModel db = null;
+                DerbyDBModel db = null;
                 try {
                     db = new DerbyDBModel();
                 } catch (CostManagerException e) {
@@ -104,14 +104,14 @@ public class AddCategoryFrame extends JFrame {
                     db.addNewCategory(category);
                 } catch (CostManagerException e) {
                     e.printStackTrace();
-                }*/
+                }
             }
         });
 
         refreshCategories.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-              /*  DerbyDBModel db = null;
+                DerbyDBModel db = null;
                 try {
                     db = new DerbyDBModel();
                 } catch (CostManagerException e) {
@@ -127,7 +127,7 @@ public class AddCategoryFrame extends JFrame {
                     }
                 } catch (CostManagerException e) {
                     e.printStackTrace();
-                }*/
+                }
 
             }
         });

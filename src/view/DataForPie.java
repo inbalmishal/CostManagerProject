@@ -4,6 +4,10 @@ public class DataForPie {
     private String name;
     private double count = 0;
 
+    public DataForPie(String name) {
+        setName(name);
+    }
+
     public String getName() {
         return name;
     }

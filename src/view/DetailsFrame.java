@@ -4,10 +4,18 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.*;
 import model.Category;
 import model.CostManagerException;
 import model.CostOrIncome;
 import model.DerbyDBModel;
+import org.jfree.data.general.PieDataset;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -23,6 +31,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 public class DetailsFrame extends JFrame {
@@ -33,9 +42,12 @@ public class DetailsFrame extends JFrame {
     private JTable costAndIncomeTable;
     private JButton ok,homePage,delete;
     private DefaultTableModel model;
+    private JLabel dateFrom,dateTo;
     private JScrollPane jsp;
-    private PieChart pieChart;
-    private ObservableList<PieChart.Data> pieData;
+    private DefaultPieDataset pieDataSet;
+    private JFreeChart chart;
+    private PiePlot3D plot;
+    private ChartPanel chartPanel;
     DerbyDBModel db;
 
     DetailsFrame() {
@@ -54,26 +66,30 @@ public class DetailsFrame extends JFrame {
         panelSouth = new JPanel();
         incomes = new JCheckBox("incomes: ");
         expenses = new JCheckBox(("expenses: "));
+        dateFrom = new JLabel("From:");
+        dateTo = new JLabel("To:");
         model = new DefaultTableModel(null, new Object[]{"description", "cost", "date", "category"});
+        pieDataSet = new DefaultPieDataset();
+
         try {
             ArrayList<CostOrIncome> myArray = db.getAllCostsAndIncomes();
             Object data[] = new Object[4];
-           // ArrayList<Category> categoryArray = db.getAllCategories();
-           // DataForPie dataPie[] = new DataForPie[categoryArray.size()];
-         //   for(int i=0;i<categoryArray.size();i++) {
-           //     String name = categoryArray.get(i).getCategoryName();
-           //     dataPie[i].setName(name);
-           // }
-        for (int i = 0; i < myArray.size(); i++){
-                String description = myArray.get(i).getDescription();
-                double cost = myArray.get(i).getCost();
-                Date date = myArray.get(i).getDate();
-                Category category = myArray.get(i).getCategory();
-             //   for(int j = 0;j<categoryArray.size();i++){
-               //     if(category.getCategoryName() == dataPie[j].getName()){
-                 //       dataPie[j].setCount(dataPie[j].getCount()+cost);
-                   // }
-              //  }
+            ArrayList<Category> categoryArray = db.getAllCategories();
+            DataForPie[] dataPie = new DataForPie[categoryArray.size()];
+            for(int i=0;i<categoryArray.size();i++) {
+                String name = categoryArray.get(i).getCategoryName();
+                dataPie[i] = new DataForPie(name);
+            }
+        for (int j = 0; j < myArray.size(); j++){
+                String description = myArray.get(j).getDescription();
+                double cost = myArray.get(j).getCost();
+                Date date = myArray.get(j).getDate();
+                Category category = myArray.get(j).getCategory();
+                for(int k = 0;k<categoryArray.size();k++){
+                    if(category.getCategoryName().equals(dataPie[k].getName())){
+                        dataPie[k].setCount(dataPie[k].getCount()+cost);
+                    }
+                }
                 data[0] = description;
                 data[1] = cost;
                 data[2] = date;
@@ -81,11 +97,12 @@ public class DetailsFrame extends JFrame {
                 model.addRow(data);
 
             }
-          //
-          //  for(int i=0;i<dataPie.length;i++){
-          //      pieData.add(new PieChart.Data(dataPie[i].getName(),dataPie[i].getCount()));
-          //  }
-          //  pieChart = new PieChart(pieData);
+
+            for(int m=0;m<dataPie.length;m++){
+                pieDataSet.setValue(dataPie[m].getName(),dataPie[m].getCount());
+            }
+            chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
+            plot = (PiePlot3D)chart.getPlot();
 
         } catch (CostManagerException e) {
             e.printStackTrace();
@@ -94,22 +111,24 @@ public class DetailsFrame extends JFrame {
         jsp = new JScrollPane();
         jsp.setBounds(215, 71, 615, 237);
 
-
     }
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
+        panelNorth.add(dateFrom);
         datePickerFrom = new CreateJDatePicker(panelNorth);
+        panelNorth.add(dateTo);
         datePickerTo = new CreateJDatePicker(panelNorth);
         panelNorth.add(incomes);
         panelNorth.add(expenses);
         panelNorth.add(ok);
         panelNorth.add(homePage);
         frame.add(panelNorth,BorderLayout.NORTH);
-        panelCenter.setLayout(new FlowLayout());
+        panelCenter.setLayout(new GridLayout(1,2));
         panelCenter.add(jsp);
         jsp.setViewportView(costAndIncomeTable);
-        //panelCenter.add(pieChart);
+        chartPanel = new ChartPanel(chart);
+        panelCenter.add(chartPanel);
         frame.add(panelCenter,BorderLayout.CENTER);
         panelSouth.add(delete,BorderLayout.CENTER);
         frame.add(panelSouth,BorderLayout.SOUTH);
@@ -181,19 +200,43 @@ public class DetailsFrame extends JFrame {
 
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
+        pieDataSet.clear();
+
         Object data[] = new Object[4];
+        ArrayList<Category> categoryArray = null;
+        try {
+            categoryArray = db.getAllCategories();
+        } catch (CostManagerException e) {
+            e.printStackTrace();
+        }
+        DataForPie[] dataPie = new DataForPie[categoryArray.size()];
+        for(int i=0;i<categoryArray.size();i++) {
+            String name = categoryArray.get(i).getCategoryName();
+            dataPie[i] = new DataForPie(name);
+        }
         for (int i = 0; i < myArray.size(); i++){
             String description = myArray.get(i).getDescription();
             double cost = myArray.get(i).getCost();
             Date date = myArray.get(i).getDate();
             Category category = myArray.get(i).getCategory();
+            for(int k = 0;k<categoryArray.size();k++){
+                if(category.getCategoryName().equals(dataPie[k].getName())){
+                    dataPie[k].setCount(dataPie[k].getCount()+cost);
+                }
+            }
             data[0] = description;
             data[1] = cost;
             data[2] = date;
             data[3] = category.getCategoryName();
            model.addRow(data);
         }
+        for(int m=0;m<dataPie.length;m++){
+            pieDataSet.setValue(dataPie[m].getName(),dataPie[m].getCount());
+        }
+        chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
+        plot = (PiePlot3D)chart.getPlot();
         model.fireTableDataChanged();
+        chartPanel.getChart().fireChartChanged();
 
     }
 
