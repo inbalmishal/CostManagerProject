@@ -483,9 +483,8 @@ public class DerbyDBModel implements IModel {
             } catch (SQLException e) {
                 //Check if the exception throw because the tables already exist or because something else.
                 if (!e.getSQLState().equals("X0Y32")) {
-                    throw new CostManagerException("the tables already exist");
+                    throw new CostManagerException(e.getMessage());
                 }
-                throw new CostManagerException("there is a problem to create the db");
             }
         } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
