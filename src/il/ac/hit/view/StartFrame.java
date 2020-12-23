@@ -24,7 +24,7 @@ public class StartFrame {
         try {
             db = new DerbyDBModel();
         } catch (CostManagerException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
         showMyExpenseIncome = new JButton("Show my expense and income");
         addNewExpenseIncome = new JButton("Add new expense or income");
@@ -36,7 +36,7 @@ public class StartFrame {
         try {
             balance = db.getTheBalance();
         } catch (CostManagerException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
         showBalance = new JLabel("Hey user,\n your balance is :" + balance);
         title = new JLabel("Cost Manager");

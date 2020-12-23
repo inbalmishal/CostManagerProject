@@ -22,6 +22,7 @@ public class AddCostOrIncomeFrame extends JFrame {
     private JPanel panelCenter;
     private JPanel panelSouth;
     private JFrame frame;
+    private ImageIcon okIcon;
 
     private JLabel title;
     private JPanel descriptionPanel;
@@ -47,6 +48,7 @@ public class AddCostOrIncomeFrame extends JFrame {
         panelNorth = new JPanel();
         panelCenter = new JPanel();
         panelSouth = new JPanel();
+        okIcon = new ImageIcon("ok.png");
         frame = new JFrame("Add New Category");
         title = new JLabel("Add Income Or Expense");
         description = new JLabel ("description:");
@@ -144,7 +146,7 @@ public class AddCostOrIncomeFrame extends JFrame {
                 try {
                     db = new DerbyDBModel();
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
 
                 String desc = descriptionText.getText();
@@ -153,14 +155,15 @@ public class AddCostOrIncomeFrame extends JFrame {
                 try {
                      date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
                 Category category = new Category(chosenCategory.getSelectedItem().toString());
                 CostOrIncome costOrIncome = new CostOrIncome(desc,cost,new java.sql.Date(date.getYear(),date.getMonth(),date.getDay()),category);
                 try {
                     db.addCostOrIncome(costOrIncome);
+                    JOptionPane.showMessageDialog(null,"The object has been added","Success!",HEIGHT,okIcon);
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
             }
         });

@@ -15,6 +15,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
     private JPanel panelWest;
     private JPanel panelCenter;
     private JFrame frame;
+    private ImageIcon okIcon;
 
     private JButton add,delete;
     private JTextField category;
@@ -31,6 +32,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
+        okIcon = new ImageIcon("ok.png");
 
         add = new JButton("add");
         delete = new JButton("delete");
@@ -47,7 +49,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         try {
             img = ImageIO.read(new File("categories.jpg"));
         } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
         }
 
         Image dImg = img.getScaledInstance(450, 350, Image.SCALE_SMOOTH);
@@ -99,14 +101,16 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                 try {
                     db = new DerbyDBModel();
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
                 String s = category.getText();
                 Category category = new Category(s);
                 try {
                     db.deleteCategory(category);
+
+                    JOptionPane.showMessageDialog(null,"The category has been deleted","Success!",HEIGHT,okIcon);
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
             }
         });
@@ -118,14 +122,15 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                 try {
                     db = new DerbyDBModel();
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
                 String s = category.getText();
                 Category category = new Category(s);
                 try {
                     db.addNewCategory(category);
+                    JOptionPane.showMessageDialog(null,"The category has been added","Success!",HEIGHT,okIcon);
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
             }
         });
@@ -137,7 +142,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                 try {
                     db = new DerbyDBModel();
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
                 try {
                     db.createDB();
@@ -148,7 +153,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                         categoryList.append("\n");
                     }
                 } catch (CostManagerException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
 
             }
