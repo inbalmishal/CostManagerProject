@@ -1,6 +1,4 @@
-import model.CostManagerException;
-import model.DerbyDBModel;
-import org.junit.Assert;
+import il.ac.hit.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
