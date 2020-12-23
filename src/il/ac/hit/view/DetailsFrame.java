@@ -1,48 +1,37 @@
-package view;
+package il.ac.hit.view;
 
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.PieChart;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.*;
-import model.Category;
-import model.CostManagerException;
-import model.CostOrIncome;
-import model.DerbyDBModel;
-import org.jfree.data.general.PieDataset;
+import il.ac.hit.model.Category;
+import il.ac.hit.model.CostManagerException;
+import il.ac.hit.model.CostOrIncome;
+import il.ac.hit.model.DerbyDBModel;
 
 import javax.swing.*;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Vector;
 
 public class DetailsFrame extends JFrame {
     private JFrame frame;
     private JPanel panelNorth,panelWest,panelCenter,panelSouth;
     private CreateJDatePicker datePickerFrom,datePickerTo;
+    private JTextField idForDelete;
     private JCheckBox incomes,expenses;
     private JTable costAndIncomeTable;
     private JButton ok,homePage,delete;
     private DefaultTableModel model;
-    private JLabel dateFrom,dateTo;
+    private JLabel dateFrom,dateTo,deleteId;
     private JScrollPane jsp;
     private DefaultPieDataset pieDataSet;
     private JFreeChart chart;
@@ -64,16 +53,18 @@ public class DetailsFrame extends JFrame {
         panelWest = new JPanel();
         panelCenter = new JPanel();
         panelSouth = new JPanel();
+        idForDelete = new JTextField(10);
         incomes = new JCheckBox("incomes: ");
         expenses = new JCheckBox(("expenses: "));
         dateFrom = new JLabel("From:");
         dateTo = new JLabel("To:");
-        model = new DefaultTableModel(null, new Object[]{"description", "cost", "date", "category"});
+        deleteId = new JLabel("id for delete: ");
+        model = new DefaultTableModel(null, new Object[]{"id","description", "cost", "date", "category"});
         pieDataSet = new DefaultPieDataset();
 
         try {
             ArrayList<CostOrIncome> myArray = db.getAllCostsAndIncomes();
-            Object data[] = new Object[4];
+            Object data[] = new Object[5];
             ArrayList<Category> categoryArray = db.getAllCategories();
             DataForPie[] dataPie = new DataForPie[categoryArray.size()];
             for(int i=0;i<categoryArray.size();i++) {
@@ -81,6 +72,7 @@ public class DetailsFrame extends JFrame {
                 dataPie[i] = new DataForPie(name);
             }
         for (int j = 0; j < myArray.size(); j++){
+                int id = myArray.get(j).getId();
                 String description = myArray.get(j).getDescription();
                 double cost = myArray.get(j).getCost();
                 Date date = myArray.get(j).getDate();
@@ -90,10 +82,11 @@ public class DetailsFrame extends JFrame {
                         dataPie[k].setCount(dataPie[k].getCount()+cost);
                     }
                 }
-                data[0] = description;
-                data[1] = cost;
-                data[2] = date;
-                data[3] = category.getCategoryName();
+                data[0] = id;
+                data[1] = description;
+                data[2] = cost;
+                data[3] = date;
+                data[4] = category.getCategoryName();
                 model.addRow(data);
 
             }
@@ -130,12 +123,19 @@ public class DetailsFrame extends JFrame {
         chartPanel = new ChartPanel(chart);
         panelCenter.add(chartPanel);
         frame.add(panelCenter,BorderLayout.CENTER);
-        panelSouth.add(delete,BorderLayout.CENTER);
+        panelSouth.add(deleteId);
+        panelSouth.add(idForDelete);
+        panelSouth.add(delete);
         frame.add(panelSouth,BorderLayout.SOUTH);
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                int id = Integer.parseInt(idForDelete.getText());
+                try {
+                    db.deleteCostOrIncome(id);
+                } catch (CostManagerException e) {
+                    e.printStackTrace();
+                }
             }
         });
         homePage.addActionListener(new ActionListener() {
@@ -202,7 +202,7 @@ public class DetailsFrame extends JFrame {
         model.fireTableDataChanged();
         pieDataSet.clear();
 
-        Object data[] = new Object[4];
+        Object data[] = new Object[5];
         ArrayList<Category> categoryArray = null;
         try {
             categoryArray = db.getAllCategories();
@@ -215,6 +215,7 @@ public class DetailsFrame extends JFrame {
             dataPie[i] = new DataForPie(name);
         }
         for (int i = 0; i < myArray.size(); i++){
+            int id = myArray.get(i).getId();
             String description = myArray.get(i).getDescription();
             double cost = myArray.get(i).getCost();
             Date date = myArray.get(i).getDate();
@@ -224,10 +225,11 @@ public class DetailsFrame extends JFrame {
                     dataPie[k].setCount(dataPie[k].getCount()+cost);
                 }
             }
-            data[0] = description;
-            data[1] = cost;
-            data[2] = date;
-            data[3] = category.getCategoryName();
+            data[0] = id;
+            data[1] = description;
+            data[2] = cost;
+            data[3] = date;
+            data[4] = category.getCategoryName();
            model.addRow(data);
         }
         for(int m=0;m<dataPie.length;m++){

@@ -1,10 +1,10 @@
-package model;
+package il.ac.hit.model;
 import java.util.ArrayList;
 import java.util.Date;
 
 public interface IModel {
     public void addCostOrIncome(CostOrIncome item ) throws CostManagerException;
-    public void deleteCostOrIncome(CostOrIncome item) throws CostManagerException;
+    public void deleteCostOrIncome(int id) throws CostManagerException;
     public void addNewCategory(Category item) throws CostManagerException;
     public void deleteCategory(Category item ) throws CostManagerException;
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from,Date to) throws CostManagerException;

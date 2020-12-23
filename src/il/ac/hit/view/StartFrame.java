@@ -1,8 +1,8 @@
-package view;
+package il.ac.hit.view;
 
 
-import model.CostManagerException;
-import model.DerbyDBModel;
+import il.ac.hit.model.CostManagerException;
+import il.ac.hit.model.DerbyDBModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class StartFrame {
         }
         showMyExpenseIncome = new JButton("Show my expense and income");
         addNewExpenseIncome = new JButton("Add new expense or income");
-        addNewCategory = new JButton("Add new category");
+        addNewCategory = new JButton("Add or delete category");
         icon = new JLabel(new ImageIcon("Image.png"));
         panelNorth = new JPanel();
         panelWest = new JPanel();
@@ -73,8 +73,8 @@ public class StartFrame {
         addNewCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AddCategoryFrame addCategoryFrame = new AddCategoryFrame();
-                addCategoryFrame.start();
+                AddOrDeleteCategoryFrame addOrDeleteCategoryFrame = new AddOrDeleteCategoryFrame();
+                addOrDeleteCategoryFrame.start();
                 frame.dispose();
             }
         });

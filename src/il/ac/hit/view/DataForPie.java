@@ -1,4 +1,4 @@
-package view;
+package il.ac.hit.view;
 
 public class DataForPie {
     private String name;

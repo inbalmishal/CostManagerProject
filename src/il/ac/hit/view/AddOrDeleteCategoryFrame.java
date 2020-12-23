@@ -1,6 +1,6 @@
-package view;
+package il.ac.hit.view;
 
-import model.*;
+import il.ac.hit.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,13 +10,13 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
-public class AddCategoryFrame extends JFrame {
+public class AddOrDeleteCategoryFrame extends JFrame {
     private JPanel panelNorth;
     private JPanel panelWest;
     private JPanel panelCenter;
     private JFrame frame;
 
-    private JButton add;
+    private JButton add,delete;
     private JTextField category;
     private JLabel newCategoryName;
     private JTextArea categoryList;
@@ -26,19 +26,20 @@ public class AddCategoryFrame extends JFrame {
     private JButton homePage;
     private JLabel icon;
 
-    AddCategoryFrame(){
-        frame = new JFrame("Add New Category");
+    AddOrDeleteCategoryFrame(){
+        frame = new JFrame("Add/Delete Category");
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
 
         add = new JButton("add");
+        delete = new JButton("delete");
         category = new JTextField(40);
-        newCategoryName = new JLabel("new category name: ");
+        newCategoryName = new JLabel("category name: ");
         listTitle = new JLabel("The categories are:\n");
         categoryList = new JTextArea();
         refreshCategories = new JButton("Refresh Categories");
-        title = new JLabel("Add New Category");
+        title = new JLabel("Add/Delete Category");
         homePage = new JButton("homePage");
         icon = new JLabel();
 
@@ -70,7 +71,9 @@ public class AddCategoryFrame extends JFrame {
         panelCenter.add(category);
         category.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelCenter.add(add);
+        panelCenter.add(delete);
         add.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        delete.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelCenter.add(homePage);
         panelCenter.add(icon);
         panelCenter.setBackground(new Color(240,240,255));
@@ -88,6 +91,25 @@ public class AddCategoryFrame extends JFrame {
         panelWest.setSize(150,130);
         panelWest.setBackground(new Color(240,240,255));
         frame.add(panelWest, BorderLayout.WEST);
+
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                DerbyDBModel db = null;
+                try {
+                    db = new DerbyDBModel();
+                } catch (CostManagerException e) {
+                    e.printStackTrace();
+                }
+                String s = category.getText();
+                Category category = new Category(s);
+                try {
+                    db.deleteCategory(category);
+                } catch (CostManagerException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         add.addActionListener(new ActionListener() { //connect to the VM
             @Override

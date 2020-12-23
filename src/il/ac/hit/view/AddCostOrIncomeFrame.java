@@ -1,9 +1,9 @@
-package view;
+package il.ac.hit.view;
 
-import model.Category;
-import model.CostManagerException;
-import model.CostOrIncome;
-import model.DerbyDBModel;
+import il.ac.hit.model.Category;
+import il.ac.hit.model.CostManagerException;
+import il.ac.hit.model.CostOrIncome;
+import il.ac.hit.model.DerbyDBModel;
 
 import javax.swing.*;
 import java.awt.*;

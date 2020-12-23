@@ -1,4 +1,4 @@
-package view;
+package il.ac.hit.view;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;

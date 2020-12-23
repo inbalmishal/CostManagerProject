@@ -1,4 +1,4 @@
-package model;
+package il.ac.hit.model;
 import java.util.Date;
 
 public class CostOrIncome {

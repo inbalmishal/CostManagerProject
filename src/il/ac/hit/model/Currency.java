@@ -1,4 +1,4 @@
-package model;
+package il.ac.hit.model;
 
 public enum Currency {
     ILS,USD,EUR;

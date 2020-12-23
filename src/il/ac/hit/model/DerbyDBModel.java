@@ -1,4 +1,4 @@
-package model;
+package il.ac.hit.model;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,15 +67,20 @@ public class DerbyDBModel implements IModel{
     }
 
     @Override
-    public void deleteCostOrIncome(CostOrIncome item) throws CostManagerException {
+    public void deleteCostOrIncome(int id) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
+        //Check if the id exist.
+        if(!checkIfIdExists(id)){
+            CostManagerException e=new CostManagerException("This id not exists");
+            throw e;
+        }
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            String sql="delete from InOutCome where id = "+item.getId();
+            String sql="delete from InOutCome where id = "+id;
             //Delete cost or income from the DB.
             statement.execute(sql);
         } catch (Exception e) {
@@ -87,6 +92,33 @@ public class DerbyDBModel implements IModel{
             if(connection!=null) try{connection.close();}catch(Exception e){}
             if(rs!=null) try{rs.close();}catch(Exception e){}
         }
+    }
+
+    private boolean checkIfIdExists(int id) throws CostManagerException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        try {
+            //Connect to the DB.
+            connection = DriverManager.getConnection(JDBC_URL);
+            statement = connection.createStatement();
+            String sql="SELECT * FROM InOutCome WHERE id = "+id;
+            //Search if this id exist in the table InOutCome in the DB.
+            rs = statement.executeQuery(sql);
+            if(rs.next())
+                return true;
+            else
+                return false;
+        } catch (Exception e) {
+            throw new CostManagerException(e.getMessage());
+        }
+        finally {
+            //Disconnect from the DB.
+            if(statement!=null) try{statement.close();}catch(Exception e){}
+            if(connection!=null) try{connection.close();}catch(Exception e){}
+            if(rs!=null) try{rs.close();}catch(Exception e){}
+        }
+
     }
 
     @Override
