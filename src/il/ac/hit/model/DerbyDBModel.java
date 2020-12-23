@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DerbyDBModel implements IModel{
+public class DerbyDBModel implements IModel {
     public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     public static final String JDBC_URL = "jdbc:derby:CostDB;create=true";
 
@@ -12,7 +12,7 @@ public class DerbyDBModel implements IModel{
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
-           throw new CostManagerException(e.getMessage());
+            throw new CostManagerException("problem with the connection to the db driver");
         }
     }
 
@@ -26,18 +26,29 @@ public class DerbyDBModel implements IModel{
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
             //check what is the max id in the table and set this id for the new item
-            item.setId(maxId()+1);
+            item.setId(maxId() + 1);
             //Insert cost or income to the DB.
-            statement.execute("insert into InOutCome(id, description, cost, date, category) values ("+ item.getId()+", '"+
-                    item.getDescription()+"', "+item.getCost()+", '"+ item.getDate() +"', '"+item.getCategory().getCategoryName()+"')");
+            statement.execute("insert into InOutCome(id, description, cost, date, category) values (" + item.getId() + ", '" +
+                    item.getDescription() + "', " + item.getCost() + ", '" + item.getDate() + "', '" + item.getCategory().getCategoryName() + "')");
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        } finally
-        {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
     }
 
@@ -45,7 +56,7 @@ public class DerbyDBModel implements IModel{
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        int max=0;
+        int max = 0;
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
@@ -56,12 +67,23 @@ public class DerbyDBModel implements IModel{
             max = rs.getInt("MaxID");
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        } finally
-        {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
         return max;
     }
@@ -72,25 +94,36 @@ public class DerbyDBModel implements IModel{
         Statement statement = null;
         ResultSet rs = null;
         //Check if the id exist.
-        if(!checkIfIdExists(id)){
-            CostManagerException e=new CostManagerException("This id not exists");
+        if (!checkIfIdExists(id)) {
+            CostManagerException e = new CostManagerException("This id not exists");
             throw e;
         }
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            String sql="delete from InOutCome where id = "+id;
+            String sql = "delete from InOutCome where id = " + id;
             //Delete cost or income from the DB.
             statement.execute(sql);
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
     }
 
@@ -102,51 +135,74 @@ public class DerbyDBModel implements IModel{
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            String sql="SELECT * FROM InOutCome WHERE id = "+id;
+            String sql = "SELECT * FROM InOutCome WHERE id = " + id;
             //Search if this id exist in the table InOutCome in the DB.
             rs = statement.executeQuery(sql);
-            if(rs.next())
+            if (rs.next())
                 return true;
             else
                 return false;
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
 
     }
 
     @Override
-    public  void addNewCategory(Category item) throws CostManagerException {
+    public void addNewCategory(Category item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
         //Check if the category already exist.
-        if(checkIfCategoryExists(item.getCategoryName())){
-            CostManagerException e=new CostManagerException("This category already exists");
-            throw e; }
-        if(item.getCategoryName().length()==0)
+        if (checkIfCategoryExists(item.getCategoryName())) {
+            CostManagerException e = new CostManagerException("This category already exists");
+            throw e;
+        }
+        if (item.getCategoryName().length() == 0)
             throw new CostManagerException("category must have at least one letter");
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            String sql="insert into category values ('"+item.getCategoryName()+"')";
+            String sql = "insert into category values ('" + item.getCategoryName() + "')";
             //Insert new category to the table category in the DB.
             statement.execute(sql);
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
     }
 
@@ -158,21 +214,32 @@ public class DerbyDBModel implements IModel{
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            String sql="SELECT * FROM category WHERE name = '"+categoryName+"'";
+            String sql = "SELECT * FROM category WHERE name = '" + categoryName + "'";
             //Search if this category name exist in the table category in the DB.
             rs = statement.executeQuery(sql);
-            if(rs.next())
+            if (rs.next())
                 return true;
             else
                 return false;
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
     }
 
@@ -182,32 +249,43 @@ public class DerbyDBModel implements IModel{
         Statement statement = null;
         ResultSet rs = null;
         //Check if the category doesn't exist.
-        if(!checkIfCategoryExists(item.getCategoryName())){
-            CostManagerException e=new CostManagerException("This category doesn't exist");
+        if (!checkIfCategoryExists(item.getCategoryName())) {
+            CostManagerException e = new CostManagerException("This category doesn't exist");
             throw e;
         }
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            String sql="delete from category where name = '"+item.getCategoryName()+"'";
+            String sql = "delete from category where name = '" + item.getCategoryName() + "'";
             //Delete category from the table category in the DB.
             statement.execute(sql);
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
     }
 
     @Override
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) throws CostManagerException {
-        if(from.after(to)) {
-            CostManagerException e=new CostManagerException("The date 'from' come after the date 'to'");
+        if (from.after(to)) {
+            CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
             throw e;
         }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomesBetweenDates(from, to);
@@ -215,7 +293,7 @@ public class DerbyDBModel implements IModel{
         //Insert to array result every cost from the items array.
         for (int i = 0; i < items.size(); i++) {
             CostOrIncome item = items.get(i);
-            if (item.getCost()<0) {
+            if (item.getCost() < 0) {
                 result.add(item);
             }
         }
@@ -224,8 +302,8 @@ public class DerbyDBModel implements IModel{
 
     @Override
     public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to) throws CostManagerException {
-        if(from.after(to)) {
-            CostManagerException e=new CostManagerException("The date 'from' come after the date 'to'");
+        if (from.after(to)) {
+            CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
             throw e;
         }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomesBetweenDates(from, to);
@@ -233,7 +311,7 @@ public class DerbyDBModel implements IModel{
         //Insert to array result every income from the items array.
         for (int i = 0; i < items.size(); i++) {
             CostOrIncome item = items.get(i);
-            if (item.getCost()>=0) {
+            if (item.getCost() >= 0) {
                 result.add(item);
             }
         }
@@ -242,8 +320,8 @@ public class DerbyDBModel implements IModel{
 
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException {
-        if(from.after(to)) {
-            CostManagerException e=new CostManagerException("The date 'from' come after the date 'to'");
+        if (from.after(to)) {
+            CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
             throw e;
         }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomes();
@@ -251,7 +329,7 @@ public class DerbyDBModel implements IModel{
         //Check every item in items array if the date between from and to, if yes put inside the result array.
         for (int i = 0; i < items.size(); i++) {
             CostOrIncome item = items.get(i);
-            if (item.getDate().compareTo(from)>=0 && item.getDate().compareTo(to)<=0) {
+            if (item.getDate().compareTo(from) >= 0 && item.getDate().compareTo(to) <= 0) {
                 result.add(item);
             }
         }
@@ -280,9 +358,21 @@ public class DerbyDBModel implements IModel{
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
         return balance;
     }
@@ -302,22 +392,32 @@ public class DerbyDBModel implements IModel{
             //Get all details from cost and income table in the DB.
             rs = statement.executeQuery("SELECT * FROM InOutCome");
             //Put inside items array all the cost and income.
-            while(rs.next())
-            {
+            while (rs.next()) {
                 //int id, String description, double cost, Date date, Category category
                 Category category = new Category(rs.getString("category"));
-                CostOrIncome item = new CostOrIncome(rs.getInt("id"), rs.getString("description"), rs.getDouble("cost"), rs.getDate("date"),category);
+                CostOrIncome item = new CostOrIncome(rs.getInt("id"), rs.getString("description"), rs.getDouble("cost"), rs.getDate("date"), category);
                 items.add(item);
             }
 
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
         return items;
     }
@@ -337,20 +437,30 @@ public class DerbyDBModel implements IModel{
             //Get all categories from category table in the DB.
             rs = statement.executeQuery("SELECT * FROM Category");
             //Put inside array categories all the categories from DB.
-            while(rs.next())
-            {
+            while (rs.next()) {
                 Category category = new Category(rs.getString("name"));
                 categories.add(category);
             }
 
         } catch (Exception e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
         return categories;
     }
@@ -360,10 +470,10 @@ public class DerbyDBModel implements IModel{
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        try{
+        try {
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
-            try{
+            try {
                 //Create the tables.
                 statement.execute("create table category(name VARCHAR(255))");
                 statement.execute("create table InOutCome(id int, description VARCHAR(255), cost DOUBLE, date DATE, category VARCHAR(255))");
@@ -372,18 +482,30 @@ public class DerbyDBModel implements IModel{
                 statement.execute("insert into Category values ('maintenance')");
             } catch (SQLException e) {
                 //Check if the exception throw because the tables already exist or because something else.
-                if (!e.getSQLState().equals("X0Y32")){
-                     throw e;
+                if (!e.getSQLState().equals("X0Y32")) {
+                    throw new CostManagerException("the tables already exist");
                 }
+                throw new CostManagerException("there is a problem to create the db");
             }
         } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
-        }
-        finally {
+        } finally {
             //Disconnect from the DB.
-            if(statement!=null) try{statement.close();}catch(Exception e){}
-            if(connection!=null) try{connection.close();}catch(Exception e){}
-            if(rs!=null) try{rs.close();}catch(Exception e){}
+            if (statement != null) try {
+                statement.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (Exception e) {
+                throw new CostManagerException(e.getMessage());
+            }
         }
     }
 }
