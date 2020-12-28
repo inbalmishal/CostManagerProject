@@ -98,6 +98,11 @@ public class ViewModel implements IViewModel {
     @Override
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) {
         final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        try {
+            pool.awaitTermination(10, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            view.showBadMassage(e.getMessage());
+        }
         Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
             @Override
             public void run() {
@@ -122,6 +127,11 @@ public class ViewModel implements IViewModel {
     @Override
     public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to)  {
         final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        try {
+            pool.awaitTermination(10, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            view.showBadMassage(e.getMessage());
+        }
         Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
             @Override
             public void run() {
@@ -146,6 +156,11 @@ public class ViewModel implements IViewModel {
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to)  {
         final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        try {
+            pool.awaitTermination(10, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            view.showBadMassage(e.getMessage());
+        }
         Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
             @Override
             public void run() {
@@ -194,6 +209,11 @@ public class ViewModel implements IViewModel {
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomes(){
     final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        try {
+            pool.awaitTermination(10, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            view.showBadMassage(e.getMessage());
+        }
     Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
         @Override
         public void run() {
