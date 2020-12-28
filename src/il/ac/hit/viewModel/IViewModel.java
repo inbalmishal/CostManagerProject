@@ -24,5 +24,4 @@ public interface IViewModel {
     public double getTheBalance();
     public ArrayList<CostOrIncome> getAllCostsAndIncomes();
     public ArrayList<Category> getAllCategories();
-    public void createDB();
 }

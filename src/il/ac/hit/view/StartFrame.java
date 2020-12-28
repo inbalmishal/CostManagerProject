@@ -38,11 +38,7 @@ public class StartFrame {
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
-        try {
-            balance = db.getTheBalance();
-        } catch (CostManagerException e) {
-            JOptionPane.showMessageDialog(null,e.getMessage());
-        }
+        balance = vm.getTheBalance();
         showBalance = new JLabel("Hey user,\n your balance is :" + balance);
         title = new JLabel("Cost Manager");
         title.setFont(new Font("serif",Font.PLAIN,40));

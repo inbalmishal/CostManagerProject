@@ -3,10 +3,12 @@ package il.ac.hit.viewModel;
 import il.ac.hit.model.*;
 import il.ac.hit.view.*;
 
+import javax.naming.CompoundName;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Objects;
+import java.util.concurrent.*;
 
 public class ViewModel implements IViewModel {
     private IModel model;
@@ -87,7 +89,26 @@ public class ViewModel implements IViewModel {
 
     @Override
     public double getTheBalance()  {
-        return 0;
+        final double[] balance = new double[1];
+        Future<Double> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    balance[0] = model.getTheBalance();
+                }catch(CostManagerException e){
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        }, balance[0]);
+        try {
+            f.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return balance[0];
+
     }
 
     @Override
@@ -97,12 +118,26 @@ public class ViewModel implements IViewModel {
 
     @Override
     public ArrayList<Category> getAllCategories() {
-        return null;
+        final ArrayList<Category>[] categories = new ArrayList[1];
+        Future<ArrayList<Category>> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    categories[0] = model.getAllCategories();
+                }catch(CostManagerException e){
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        }, categories[0]);
+        try {
+            f.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return categories[0];
     }
 
-    @Override
-    public void createDB(){
-
-    }
 
 }
