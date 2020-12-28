@@ -4,6 +4,7 @@ import il.ac.hit.model.*;
 import il.ac.hit.view.*;
 
 import javax.naming.CompoundName;
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,9 +40,9 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.addCostOrIncome(item);
-                   // view.showMassage("the item was added successfully");
+                    view.showGoodMassage("The object has been added");
                 }catch(CostManagerException e){
-                   // view.showMassage(e.getMessage());
+                    view.showBadMassage(e.getMessage());
                 }
             }
         });
@@ -49,6 +50,17 @@ public class ViewModel implements IViewModel {
 
     @Override
     public void deleteCostOrIncome(int id) {
+        pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    model.deleteCostOrIncome(id);
+                    view.showGoodMassage("The object has been deleted");
+                } catch (CostManagerException e) {
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        });
 
     }
 
@@ -59,7 +71,7 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.addNewCategory(item);
-                    view.showGoodMassage("the category was added successfully");
+                    view.showGoodMassage("The category was added successfully");
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
                 }
@@ -68,23 +80,91 @@ public class ViewModel implements IViewModel {
     }
 
     @Override
-    public void deleteCategory(Category item) {
+    public void deleteCategory(Category category) {
+        pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    model.deleteCategory(category);
+                    view.showGoodMassage("The category has been deleted");
+                }catch(CostManagerException e){
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        });
 
     }
 
     @Override
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) {
-        return null;
+        final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    item[0] = model.getAllCostsBetweenDates(from,to);
+                }catch(CostManagerException e){
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        }, item[0]);
+        try {
+            f.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return item[0];
+
     }
 
     @Override
     public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to)  {
-        return null;
+        final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    item[0] = model.getAllIncomesBetweenDates(from,to);
+                }catch(CostManagerException e){
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        }, item[0]);
+        try {
+            f.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return item[0];
+
     }
 
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to)  {
-        return null;
+        final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    item[0] = model.getAllCostsAndIncomesBetweenDates(from,to);
+                }catch(CostManagerException e){
+                    view.showBadMassage(e.getMessage());
+                }
+            }
+        }, item[0]);
+        try {
+            f.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return item[0];
+
     }
 
     @Override
@@ -112,8 +192,26 @@ public class ViewModel implements IViewModel {
     }
 
     @Override
-    public ArrayList<CostOrIncome> getAllCostsAndIncomes()  {
-        return null;
+    public ArrayList<CostOrIncome> getAllCostsAndIncomes(){
+    final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+    Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                item[0] = model.getAllCostsAndIncomes();
+            }catch(CostManagerException e){
+                view.showBadMassage(e.getMessage());
+            }
+        }
+    }, item[0]);
+        try {
+        f.get();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    } catch (ExecutionException e) {
+        e.printStackTrace();
+    }
+        return item[0];
     }
 
     @Override

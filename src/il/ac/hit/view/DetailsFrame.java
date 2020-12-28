@@ -47,11 +47,6 @@ public class DetailsFrame extends JFrame {
         setVm(vm);
         frame = new JFrame("Cost Manager");
         okIcon = new ImageIcon("ok.png");
-        try {
-            db = new DerbyDBModel();
-        } catch (CostManagerException e) {
-            e.printStackTrace();
-        }
         ok = new JButton("OK");
         homePage = new JButton("Home Page");
         delete = new JButton("Delete");
@@ -68,10 +63,9 @@ public class DetailsFrame extends JFrame {
         model = new DefaultTableModel(null, new Object[]{"id","description", "cost", "date", "category"});
         pieDataSet = new DefaultPieDataset();
 
-        try {
-            ArrayList<CostOrIncome> myArray = db.getAllCostsAndIncomes();
+            ArrayList<CostOrIncome> myArray = vm.getAllCostsAndIncomes();
             Object data[] = new Object[5];
-            ArrayList<Category> categoryArray = db.getAllCategories();
+            ArrayList<Category> categoryArray = vm.getAllCategories();
             DataForPie[] dataPie = new DataForPie[categoryArray.size()];
             for(int i=0;i<categoryArray.size();i++) {
                 String name = categoryArray.get(i).getCategoryName();
@@ -103,9 +97,6 @@ public class DetailsFrame extends JFrame {
             chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
             plot = (PiePlot3D)chart.getPlot();
 
-        } catch (CostManagerException e) {
-            e.printStackTrace();
-        }
         costAndIncomeTable = new JTable(model);
         jsp = new JScrollPane();
         jsp.setBounds(215, 71, 615, 237);
@@ -142,12 +133,7 @@ public class DetailsFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int id = Integer.parseInt(idForDelete.getText()),n = 0;
-                try {
-                    db.deleteCostOrIncome(id);
-                    JOptionPane.showMessageDialog(null,"The object has been deleted","Success!",HEIGHT,okIcon);
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
+                vm.deleteCostOrIncome(id);
                 Date dateFrom = null;
                 Date dateTo = null;
                 try {
@@ -157,36 +143,24 @@ public class DetailsFrame extends JFrame {
                    n = 1;
                 }
                 if(n == 1){
-                    try {
-                        changeTheTableAndPie(db.getAllCostsAndIncomes(),1);
-                    } catch (CostManagerException ex) {
-                        JOptionPane.showMessageDialog(null,ex.getMessage(),"Error!",HEIGHT);
-                    }
+
+                    changeTheTableAndPie(vm.getAllCostsAndIncomes(),1);
                 }
                 else{
                 boolean checkedIncomes,checkedExpenses;
                 checkedIncomes = incomes.isSelected();
                 checkedExpenses = expenses.isSelected();
                 if(checkedExpenses && checkedIncomes){
-                    try {
-                        changeTheTableAndPie(db.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
-                    } catch (CostManagerException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                    }
+
+                        changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
                 }
                 else if(checkedIncomes){
-                    try {
-                        changeTheTableAndPie(db.getAllIncomesBetweenDates(dateFrom,dateTo),1);
-                    } catch (CostManagerException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                    }
+
+                        changeTheTableAndPie(vm.getAllIncomesBetweenDates(dateFrom,dateTo),1);
                 }
                 else if(checkedExpenses){
-                    try {
-                        changeTheTableAndPie(db.getAllCostsBetweenDates(dateFrom,dateTo),-1);
-                    } catch (CostManagerException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                    }
+
+                        changeTheTableAndPie(vm.getAllCostsBetweenDates(dateFrom,dateTo),-1);
                 }
                 else{
                     model.getDataVector().removeAllElements();
@@ -219,25 +193,16 @@ public class DetailsFrame extends JFrame {
                 checkedIncomes = incomes.isSelected();
                 checkedExpenses = expenses.isSelected();
                 if(checkedExpenses && checkedIncomes){
-                    try {
-                        changeTheTableAndPie(db.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
-                    } catch (CostManagerException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                    }
+
+                    changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
                 }
                 else if(checkedIncomes){
-                    try {
-                        changeTheTableAndPie(db.getAllIncomesBetweenDates(dateFrom,dateTo),1);
-                    } catch (CostManagerException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                    }
+
+                    changeTheTableAndPie(vm.getAllIncomesBetweenDates(dateFrom,dateTo),1);
                 }
                 else if(checkedExpenses){
-                    try {
-                        changeTheTableAndPie(db.getAllCostsBetweenDates(dateFrom,dateTo),-1);
-                    } catch (CostManagerException e) {
-                        JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                    }
+
+                    changeTheTableAndPie(vm.getAllCostsBetweenDates(dateFrom,dateTo),-1);
                 }
                 else{
                     model.getDataVector().removeAllElements();
@@ -258,7 +223,7 @@ public class DetailsFrame extends JFrame {
 
     }
 
-    private void changeTheTableAndPie(ArrayList<CostOrIncome> myArray,int n) throws CostManagerException {
+    private void changeTheTableAndPie(ArrayList<CostOrIncome> myArray,int n) {
 
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
@@ -266,11 +231,7 @@ public class DetailsFrame extends JFrame {
 
         Object data[] = new Object[5];
         ArrayList<Category> categoryArray = null;
-        try {
-            categoryArray = db.getAllCategories();
-        } catch (CostManagerException e) {
-            throw e;
-        }
+        categoryArray = vm.getAllCategories();
         DataForPie[] dataPie = new DataForPie[categoryArray.size()];
         for(int i=0;i<categoryArray.size();i++) {
             String name = categoryArray.get(i).getCategoryName();
