@@ -17,6 +17,11 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
+    public synchronized IModel getInstance(){
+        return this;
+    }
+
+    @Override
     public void addCostOrIncome(CostOrIncome item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;

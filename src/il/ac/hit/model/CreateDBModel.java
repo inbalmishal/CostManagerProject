@@ -12,8 +12,8 @@ public class CreateDBModel {
         //setAndCheckCategory();
        // close("Category");
        // close("InOutCome");
-         checkCategory();
-        checkInOutCome();
+        // checkCategory();
+        //checkInOutCome();
     }
 
     public static void close(String TableName){

@@ -39,7 +39,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    model.addCostOrIncome(item);
+                    model.getInstance().addCostOrIncome(item);
                     view.showGoodMassage("The object has been added");
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
@@ -54,7 +54,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    model.deleteCostOrIncome(id);
+                    model.getInstance().deleteCostOrIncome(id);
                     view.showGoodMassage("The object has been deleted");
                 } catch (CostManagerException e) {
                     view.showBadMassage(e.getMessage());
@@ -70,7 +70,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    model.addNewCategory(item);
+                    model.getInstance().addNewCategory(item);
                     view.showGoodMassage("The category was added successfully");
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
@@ -85,7 +85,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    model.deleteCategory(category);
+                    model.getInstance().deleteCategory(category);
                     view.showGoodMassage("The category has been deleted");
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
@@ -102,7 +102,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    item[0] = model.getAllCostsBetweenDates(from,to);
+                    item[0] = model.getInstance().getAllCostsBetweenDates(from,to);
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
                 }
@@ -126,7 +126,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    item[0] = model.getAllIncomesBetweenDates(from,to);
+                    item[0] = model.getInstance().getAllIncomesBetweenDates(from,to);
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
                 }
@@ -150,7 +150,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    item[0] = model.getAllCostsAndIncomesBetweenDates(from,to);
+                    item[0] = model.getInstance().getAllCostsAndIncomesBetweenDates(from,to);
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
                 }
@@ -174,7 +174,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    balance[0] = model.getTheBalance();
+                    balance[0] = model.getInstance().getTheBalance();
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
                 }
@@ -198,7 +198,7 @@ public class ViewModel implements IViewModel {
         @Override
         public void run() {
             try {
-                item[0] = model.getAllCostsAndIncomes();
+                item[0] = model.getInstance().getAllCostsAndIncomes();
             }catch(CostManagerException e){
                 view.showBadMassage(e.getMessage());
             }
@@ -221,7 +221,7 @@ public class ViewModel implements IViewModel {
             @Override
             public void run() {
                 try {
-                    categories[0] = model.getAllCategories();
+                    categories[0] = model.getInstance().getAllCategories();
                 }catch(CostManagerException e){
                     view.showBadMassage(e.getMessage());
                 }
