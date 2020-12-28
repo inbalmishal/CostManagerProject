@@ -15,6 +15,7 @@ public class Program {
         IViewModel vm = new ViewModel();
         try {
             model = new DerbyDBModel();
+            model.createDB();
         } catch (CostManagerException e) {
             e.printStackTrace();
         }
