@@ -1,7 +1,8 @@
-package il.ac.hit.model;
+package il.ac.hit.viewModel;
 
 public enum Currency {
-    ILS,USD,EUR;
+    ILS, USD, EUR;
+
     private double exchangeRate;
     public double convertToShekels(double sum){
         return sum*getExchangeRate();

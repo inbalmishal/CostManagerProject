@@ -3,6 +3,8 @@ package il.ac.hit.view;
 
 import il.ac.hit.model.CostManagerException;
 import il.ac.hit.model.DerbyDBModel;
+import il.ac.hit.viewModel.IViewModel;
+import il.ac.hit.viewModel.ViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,13 +14,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class StartFrame {
+    private IViewModel vm;
     private JFrame frame;
     private JPanel panelNorth,panelWest,panelCenter;
     private JButton showMyExpenseIncome,addNewExpenseIncome,addNewCategory;
     private JLabel icon,showBalance,title;
     private double balance;
-    public StartFrame() {
 
+
+    public StartFrame(IViewModel vm) {
+        setVm(vm);
         frame = new JFrame("Cost Manager");
         DerbyDBModel db = null;
         try {
@@ -44,6 +49,11 @@ public class StartFrame {
         showBalance.setFont(new Font("serif",Font.PLAIN,40));
 
     }
+
+    public void setVm(IViewModel vm) {
+        this.vm = vm;
+    }
+
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -65,7 +75,7 @@ public class StartFrame {
         addNewExpenseIncome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AddCostOrIncomeFrame addCostOrIncomeFrame = new AddCostOrIncomeFrame();
+                AddCostOrIncomeFrame addCostOrIncomeFrame = new AddCostOrIncomeFrame(vm);
                 addCostOrIncomeFrame.start();
                 frame.dispose();
             }
@@ -73,7 +83,7 @@ public class StartFrame {
         addNewCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AddOrDeleteCategoryFrame addOrDeleteCategoryFrame = new AddOrDeleteCategoryFrame();
+                AddOrDeleteCategoryFrame addOrDeleteCategoryFrame = new AddOrDeleteCategoryFrame(vm);
                 addOrDeleteCategoryFrame.start();
                 frame.dispose();
             }
@@ -87,7 +97,7 @@ public class StartFrame {
         showMyExpenseIncome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                DetailsFrame detailsFrame = new DetailsFrame();
+                DetailsFrame detailsFrame = new DetailsFrame(vm);
                 detailsFrame.start();
                 frame.dispose();
             }

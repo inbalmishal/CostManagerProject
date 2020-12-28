@@ -1,6 +1,7 @@
 package il.ac.hit.view;
 
 import il.ac.hit.model.*;
+import il.ac.hit.viewModel.IViewModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,11 +12,11 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class AddOrDeleteCategoryFrame extends JFrame {
+    private IViewModel vm;
     private JPanel panelNorth;
     private JPanel panelWest;
     private JPanel panelCenter;
     private JFrame frame;
-    private ImageIcon okIcon;
 
     private JButton add,delete;
     private JTextField category;
@@ -27,12 +28,12 @@ public class AddOrDeleteCategoryFrame extends JFrame {
     private JButton homePage;
     private JLabel icon;
 
-    AddOrDeleteCategoryFrame(){
+    AddOrDeleteCategoryFrame(IViewModel vm){
+        setVm(vm);
         frame = new JFrame("Add/Delete Category");
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
-        okIcon = new ImageIcon("ok.png");
 
         add = new JButton("add");
         delete = new JButton("delete");
@@ -55,6 +56,10 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         Image dImg = img.getScaledInstance(450, 350, Image.SCALE_SMOOTH);
         ImageIcon categoryImage = new ImageIcon(dImg);
         icon.setIcon(categoryImage);
+    }
+
+    public void setVm(IViewModel vm) {
+        this.vm = vm;
     }
 
     public void start(){
@@ -108,7 +113,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                 try {
                     db.deleteCategory(category);
 
-                    JOptionPane.showMessageDialog(null,"The category has been deleted","Success!",HEIGHT,okIcon);
+                   // JOptionPane.showMessageDialog(null,"The category has been deleted","Success!",HEIGHT,okIcon);
                 } catch (CostManagerException e) {
                     JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
@@ -118,20 +123,9 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         add.addActionListener(new ActionListener() { //connect to the VM
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                DerbyDBModel db = null;
-                try {
-                    db = new DerbyDBModel();
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
                 String s = category.getText();
                 Category category = new Category(s);
-                try {
-                    db.addNewCategory(category);
-                    JOptionPane.showMessageDialog(null,"The category has been added","Success!",HEIGHT,okIcon);
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
+                vm.addNewCategory(category);
             }
         });
 
@@ -162,7 +156,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         homePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                StartFrame startFrame = new StartFrame();
+                StartFrame startFrame = new StartFrame(vm);
                 startFrame.start();
                 frame.dispose();
             }

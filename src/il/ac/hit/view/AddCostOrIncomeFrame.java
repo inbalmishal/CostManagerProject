@@ -4,6 +4,7 @@ import il.ac.hit.model.Category;
 import il.ac.hit.model.CostManagerException;
 import il.ac.hit.model.CostOrIncome;
 import il.ac.hit.model.DerbyDBModel;
+import il.ac.hit.viewModel.IViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AddCostOrIncomeFrame extends JFrame {
+    private IViewModel vm;
     private JPanel panelNorth;
     private JPanel panelCenter;
     private JPanel panelSouth;
@@ -44,7 +46,8 @@ public class AddCostOrIncomeFrame extends JFrame {
     private JButton add;
     private JButton homePage;
 
-    AddCostOrIncomeFrame() {
+    AddCostOrIncomeFrame(IViewModel vm) {
+        setVm(vm);
         panelNorth = new JPanel();
         panelCenter = new JPanel();
         panelSouth = new JPanel();
@@ -69,6 +72,10 @@ public class AddCostOrIncomeFrame extends JFrame {
         datePanel = new JPanel();
         categoryPanel = new JPanel();
 
+    }
+
+    public void setVm(IViewModel vm) {
+        this.vm = vm;
     }
 
     //in the future we need to change it - call with the vm
@@ -137,8 +144,6 @@ public class AddCostOrIncomeFrame extends JFrame {
         panelSouth.setBackground(new Color(240,240,255));
         frame.add(panelSouth, BorderLayout.SOUTH);
 
-
-
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -171,7 +176,7 @@ public class AddCostOrIncomeFrame extends JFrame {
         homePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                StartFrame startFrame = new StartFrame();
+                StartFrame startFrame = new StartFrame(vm);
                 startFrame.start();
                 frame.dispose();
             }

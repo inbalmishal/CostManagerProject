@@ -1,5 +1,7 @@
 package il.ac.hit.view;
 
+import il.ac.hit.viewModel.IViewModel;
+import il.ac.hit.viewModel.ViewModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class DetailsFrame extends JFrame {
+    private IViewModel vm;
     private JFrame frame;
     private JPanel panelNorth,panelWest,panelCenter,panelSouth;
     private CreateJDatePicker datePickerFrom,datePickerTo;
@@ -40,7 +43,8 @@ public class DetailsFrame extends JFrame {
     private ImageIcon okIcon;
     DerbyDBModel db;
 
-    DetailsFrame() {
+    DetailsFrame(IViewModel vm) {
+        setVm(vm);
         frame = new JFrame("Cost Manager");
         okIcon = new ImageIcon("ok.png");
         try {
@@ -107,6 +111,11 @@ public class DetailsFrame extends JFrame {
         jsp.setBounds(215, 71, 615, 237);
 
     }
+
+    public void setVm(IViewModel vm) {
+        this.vm = vm;
+    }
+
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -190,7 +199,7 @@ public class DetailsFrame extends JFrame {
         homePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                StartFrame startFrame = new StartFrame();
+                StartFrame startFrame = new StartFrame(vm);
                 startFrame.start();
                 frame.dispose();
             }
