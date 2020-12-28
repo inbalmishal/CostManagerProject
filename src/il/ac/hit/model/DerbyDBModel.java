@@ -92,7 +92,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public void deleteCostOrIncome(int id) throws CostManagerException {
+    public synchronized void deleteCostOrIncome(int id) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -288,7 +288,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) throws CostManagerException {
+    public synchronized ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
             CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
             throw e;
@@ -306,7 +306,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to) throws CostManagerException {
+    public synchronized ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
             CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
             throw e;
@@ -324,7 +324,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException {
+    public synchronized ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
             CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
             throw e;
@@ -383,7 +383,7 @@ public class DerbyDBModel implements IModel {
     }
 
     @Override
-    public ArrayList<CostOrIncome> getAllCostsAndIncomes() throws CostManagerException {
+    public synchronized ArrayList<CostOrIncome> getAllCostsAndIncomes() throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
