@@ -22,7 +22,9 @@ public class AddOrDeleteCategoryFrame extends JFrame {
     private JTextField category;
     private JLabel newCategoryName;
     private JTextArea categoryList;
+    private JScrollPane jsp;
     private JButton refreshCategories;
+
     private JLabel title;
     private JLabel listTitle;
     private JButton homePage;
@@ -56,6 +58,8 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         Image dImg = img.getScaledInstance(450, 350, Image.SCALE_SMOOTH);
         ImageIcon categoryImage = new ImageIcon(dImg);
         icon.setIcon(categoryImage);
+
+        jsp = new JScrollPane();
     }
 
     public void setVm(IViewModel vm) {
@@ -97,6 +101,9 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         panelWest.add(refreshCategories, BorderLayout.SOUTH);
         panelWest.setSize(150,130);
         panelWest.setBackground(new Color(240,240,255));
+        jsp.setBounds(panelWest.getBounds());
+        panelWest.add(jsp);
+        jsp.setViewportView(categoryList);
         frame.add(panelWest, BorderLayout.WEST);
 
         delete.addActionListener(new ActionListener() {

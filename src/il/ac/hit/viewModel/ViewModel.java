@@ -256,6 +256,4 @@ public class ViewModel implements IViewModel {
         }
         return categories[0];
     }
-
-
 }
