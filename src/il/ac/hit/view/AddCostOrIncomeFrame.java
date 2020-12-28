@@ -80,24 +80,13 @@ public class AddCostOrIncomeFrame extends JFrame {
 
     //in the future we need to change it - call with the vm
     public JComboBox createChosenCategory() {
-        DerbyDBModel db = null;
-        try {
-            db = new DerbyDBModel();
-        } catch (CostManagerException e) {
-            e.printStackTrace();
-        }
         JComboBox categoriesJCombox = null;
-        try {
-            db.createDB();
-            ArrayList<Category> categories = db.getAllCategories();
-            String[] categoriesNames = new String[categories.size()];
-            for(int i =0;i<categories.size();i++){
-                categoriesNames[i] = categories.get(i).getCategoryName();
-            }
-            categoriesJCombox = new JComboBox(categoriesNames);
-        } catch (CostManagerException e) {
-            e.printStackTrace();
+        ArrayList<Category> categories = vm.getAllCategories();
+        String[] categoriesNames = new String[categories.size()];
+        for(int i =0;i<categories.size();i++){
+            categoriesNames[i] = categories.get(i).getCategoryName();
         }
+        categoriesJCombox = new JComboBox(categoriesNames);
         return categoriesJCombox;
     }
 
@@ -147,13 +136,6 @@ public class AddCostOrIncomeFrame extends JFrame {
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                DerbyDBModel db=null;
-                try {
-                    db = new DerbyDBModel();
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
-
                 String desc = descriptionText.getText();
                 double cost = Double.parseDouble(costText.getText());
                 Date date = null;
@@ -164,12 +146,7 @@ public class AddCostOrIncomeFrame extends JFrame {
                 }
                 Category category = new Category(chosenCategory.getSelectedItem().toString());
                 CostOrIncome costOrIncome = new CostOrIncome(desc,cost,new java.sql.Date(date.getYear(),date.getMonth(),date.getDay()),category);
-                try {
-                    db.addCostOrIncome(costOrIncome);
-                    JOptionPane.showMessageDialog(null,"The object has been added","Success!",HEIGHT,okIcon);
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
+                vm.addCostOrIncome(costOrIncome);
             }
         });
 
