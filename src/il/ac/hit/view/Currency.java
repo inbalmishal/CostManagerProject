@@ -1,4 +1,4 @@
-package il.ac.hit.viewModel;
+package il.ac.hit.view;
 
 public enum Currency {
     ILS, USD, EUR;
