@@ -102,21 +102,9 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                DerbyDBModel db = null;
-                try {
-                    db = new DerbyDBModel();
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
                 String s = category.getText();
                 Category category = new Category(s);
-                try {
-                    db.deleteCategory(category);
-
-                   // JOptionPane.showMessageDialog(null,"The category has been deleted","Success!",HEIGHT,okIcon);
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
+                vm.deleteCategory(category);
             }
         });
 
@@ -132,24 +120,12 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         refreshCategories.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                DerbyDBModel db = null;
-                try {
-                    db = new DerbyDBModel();
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
+                ArrayList<Category> categories = vm.getAllCategories();
+                categoryList.setText("");
+                for(Category category:categories){
+                    categoryList.append(category.toString());
+                    categoryList.append("\n");
                 }
-                try {
-                    db.createDB();
-                    ArrayList<Category> categories = db.getAllCategories();
-                    categoryList.setText("");
-                    for(Category category:categories){
-                        categoryList.append(category.toString());
-                        categoryList.append("\n");
-                    }
-                } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
-
             }
         });
 
