@@ -1,9 +1,7 @@
 package il.ac.hit.view;
 
 import il.ac.hit.model.Category;
-import il.ac.hit.model.CostManagerException;
 import il.ac.hit.model.CostOrIncome;
-import il.ac.hit.model.DerbyDBModel;
 import il.ac.hit.viewModel.IViewModel;
 
 import javax.swing.*;
@@ -17,6 +15,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static il.ac.hit.view.Currency.*;
 
 public class AddCostOrIncomeFrame extends JFrame {
     private IViewModel vm;
@@ -43,6 +43,10 @@ public class AddCostOrIncomeFrame extends JFrame {
     private JLabel category;
     private JComboBox chosenCategory;
 
+    private JPanel currencyPanel;
+    private JLabel currency;
+    private JComboBox chosenCurrency;
+
     private JButton add;
     private JButton homePage;
 
@@ -60,9 +64,11 @@ public class AddCostOrIncomeFrame extends JFrame {
         costText = new JTextField(40);
         date = new JLabel("date:");
         category = new JLabel("category:");
+        currency = new JLabel("currency:");
 
         //call to function that charges the categories from the db to this JComboBox
         chosenCategory = createChosenCategory();
+        chosenCurrency = createChosenCurrency();
 
         add = new JButton("add");
         homePage = new JButton("homePage");
@@ -71,14 +77,13 @@ public class AddCostOrIncomeFrame extends JFrame {
         costPanel = new JPanel();
         datePanel = new JPanel();
         categoryPanel = new JPanel();
-
+        currencyPanel= new JPanel();
     }
 
     public void setVm(IViewModel vm) {
         this.vm = vm;
     }
 
-    //in the future we need to change it - call with the vm
     public JComboBox createChosenCategory() {
         JComboBox categoriesJCombox = null;
         ArrayList<Category> categories = vm.getAllCategories();
@@ -88,6 +93,13 @@ public class AddCostOrIncomeFrame extends JFrame {
         }
         categoriesJCombox = new JComboBox(categoriesNames);
         return categoriesJCombox;
+    }
+
+    public JComboBox createChosenCurrency(){
+        JComboBox currenciesJCombox = null;
+        String[] Currencies = {"ILS","USD","EUR"};
+        currenciesJCombox = new JComboBox(Currencies);
+        return currenciesJCombox;
     }
 
     public void start(){
@@ -108,7 +120,6 @@ public class AddCostOrIncomeFrame extends JFrame {
         descriptionPanel.setBackground(new Color(240,240,255));
         panelCenter.add(descriptionPanel);
 
-
         costPanel.add(cost);
         costPanel.add(costText);
         costPanel.setBackground(new Color(240,240,255));
@@ -124,6 +135,11 @@ public class AddCostOrIncomeFrame extends JFrame {
         categoryPanel.setBackground(new Color(240,240,255));
         panelCenter.add(categoryPanel);
 
+        currencyPanel.add(currency);
+        currencyPanel.add(chosenCurrency);
+        currencyPanel.setBackground(new Color(240,240,255));
+        panelCenter.add(currencyPanel);
+
         frame.add(panelCenter, BorderLayout.CENTER);
 
         //south panel
@@ -137,7 +153,13 @@ public class AddCostOrIncomeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String desc = descriptionText.getText();
-                double cost = Double.parseDouble(costText.getText());
+                double cost = 0;
+                try {
+                    cost = Double.parseDouble(costText.getText());
+                } catch(NumberFormatException  e) {
+                    JOptionPane.showMessageDialog(null, "the cost must be a double", "Error!", HEIGHT);
+                }
+
                 Date date = null;
                 try {
                      date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
@@ -145,7 +167,21 @@ public class AddCostOrIncomeFrame extends JFrame {
                     JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
                 Category category = new Category(chosenCategory.getSelectedItem().toString());
-                CostOrIncome costOrIncome = new CostOrIncome(desc,cost,new java.sql.Date(date.getYear(),date.getMonth(),date.getDay()),category);
+                String currency = chosenCurrency.getSelectedItem().toString();
+                switch (currency){
+                    case "EUR":
+                        EUR.setExchangeRate(3.9355);
+                        cost = EUR.convertToShekels(cost);
+                        break;
+                    case "USD":
+                        USD.setExchangeRate(3.2224);
+                        cost = USD.convertToShekels(cost);
+                        break;
+                }
+                CostOrIncome costOrIncome = null;
+                try {
+                     costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+                } catch (NullPointerException e) { }
                 vm.addCostOrIncome(costOrIncome);
             }
         });

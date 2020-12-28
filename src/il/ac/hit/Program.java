@@ -9,7 +9,6 @@ import javax.swing.*;
 
 public class Program {
     public static void main(String[] args) {
-
         IModel model = null;
         IView view = new View();
         IViewModel vm = new ViewModel();
@@ -19,7 +18,6 @@ public class Program {
         } catch (CostManagerException e) {
             e.printStackTrace();
         }
-
         view.setViewModel(vm);
         vm.setModel(model);
         vm.setView(view);

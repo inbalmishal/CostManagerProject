@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public interface IModel {
-    public IModel getInstance();
     public void addCostOrIncome(CostOrIncome item ) throws CostManagerException;
     public void deleteCostOrIncome(int id) throws CostManagerException;
     public void addNewCategory(Category item) throws CostManagerException;

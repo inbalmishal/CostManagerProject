@@ -4,7 +4,6 @@ package il.ac.hit.view;
 import il.ac.hit.model.CostManagerException;
 import il.ac.hit.model.DerbyDBModel;
 import il.ac.hit.viewModel.IViewModel;
-import il.ac.hit.viewModel.ViewModel;
 
 import javax.swing.*;
 import java.awt.*;

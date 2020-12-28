@@ -16,16 +16,14 @@ public class DerbyDBModel implements IModel {
         }
     }
 
-    @Override
-    public synchronized IModel getInstance(){
-        return this;
-    }
 
     @Override
     public void addCostOrIncome(CostOrIncome item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
+        if (item.getDescription().length() == 0)
+            throw new CostManagerException("item description must have at least one letter");
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
@@ -253,6 +251,8 @@ public class DerbyDBModel implements IModel {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
+        if (item.getCategoryName().length() == 0)
+            throw new CostManagerException("category must have at least one letter");
         //Check if the category doesn't exist.
         if (!checkIfCategoryExists(item.getCategoryName())) {
             CostManagerException e = new CostManagerException("This category doesn't exist");

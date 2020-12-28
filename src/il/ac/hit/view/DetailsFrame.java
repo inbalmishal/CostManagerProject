@@ -1,16 +1,13 @@
 package il.ac.hit.view;
 
 import il.ac.hit.viewModel.IViewModel;
-import il.ac.hit.viewModel.ViewModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.*;
 import il.ac.hit.model.Category;
-import il.ac.hit.model.CostManagerException;
 import il.ac.hit.model.CostOrIncome;
-import il.ac.hit.model.DerbyDBModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -41,7 +38,6 @@ public class DetailsFrame extends JFrame {
     private PiePlot3D plot;
     private ChartPanel chartPanel;
     private ImageIcon okIcon;
-    DerbyDBModel db;
 
     DetailsFrame(IViewModel vm) {
         setVm(vm);
@@ -100,7 +96,6 @@ public class DetailsFrame extends JFrame {
         costAndIncomeTable = new JTable(model);
         jsp = new JScrollPane();
         jsp.setBounds(215, 71, 615, 237);
-
     }
 
     public void setVm(IViewModel vm) {
@@ -132,7 +127,12 @@ public class DetailsFrame extends JFrame {
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int id = Integer.parseInt(idForDelete.getText()),n = 0;
+                int id = 0, n = 0;
+                try {
+                    id = Integer.parseInt(idForDelete.getText());
+                }catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "id must have value", "Error!", HEIGHT);
+                }
                 vm.deleteCostOrIncome(id);
                 Date dateFrom = null;
                 Date dateTo = null;
@@ -143,7 +143,6 @@ public class DetailsFrame extends JFrame {
                    n = 1;
                 }
                 if(n == 1){
-
                     changeTheTableAndPie(vm.getAllCostsAndIncomes(),1);
                 }
                 else{
@@ -151,7 +150,6 @@ public class DetailsFrame extends JFrame {
                 checkedIncomes = incomes.isSelected();
                 checkedExpenses = expenses.isSelected();
                 if(checkedExpenses && checkedIncomes){
-
                         changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
                 }
                 else if(checkedIncomes){
@@ -224,7 +222,6 @@ public class DetailsFrame extends JFrame {
     }
 
     private void changeTheTableAndPie(ArrayList<CostOrIncome> myArray,int n) {
-
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
         pieDataSet.clear();
