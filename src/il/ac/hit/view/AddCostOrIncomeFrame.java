@@ -125,6 +125,11 @@ public class AddCostOrIncomeFrame extends JFrame {
         costPanel.setBackground(new Color(240,240,255));
         panelCenter.add(costPanel);
 
+        currencyPanel.add(currency);
+        currencyPanel.add(chosenCurrency);
+        currencyPanel.setBackground(new Color(240,240,255));
+        panelCenter.add(currencyPanel);
+
         datePanel.add(date);
         datePicker = new CreateJDatePicker(datePanel);
         datePanel.setBackground(new Color(240,240,255));
@@ -134,11 +139,6 @@ public class AddCostOrIncomeFrame extends JFrame {
         categoryPanel.add(chosenCategory);
         categoryPanel.setBackground(new Color(240,240,255));
         panelCenter.add(categoryPanel);
-
-        currencyPanel.add(currency);
-        currencyPanel.add(chosenCurrency);
-        currencyPanel.setBackground(new Color(240,240,255));
-        panelCenter.add(currencyPanel);
 
         frame.add(panelCenter, BorderLayout.CENTER);
 
