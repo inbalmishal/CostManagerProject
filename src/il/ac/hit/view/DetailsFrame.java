@@ -1,26 +1,29 @@
 package il.ac.hit.view;
 
 import il.ac.hit.viewModel.IViewModel;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.*;
+
 import il.ac.hit.model.Category;
 import il.ac.hit.model.CostOrIncome;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class DetailsFrame extends JFrame {
     private IViewModel vm;
@@ -36,10 +39,10 @@ public class DetailsFrame extends JFrame {
     private JScrollPane jsp;
     private DefaultPieDataset pieDataSet;
     private JFreeChart chart;
-    private PiePlot3D plot;
     private ChartPanel chartPanel;
     private ImageIcon okIcon;
 
+    //Create all things include this frame.
     DetailsFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
@@ -60,6 +63,7 @@ public class DetailsFrame extends JFrame {
         model = new DefaultTableModel(null, new Object[]{"id","description", "cost", "date", "category"});
         pieDataSet = new DefaultPieDataset();
 
+        //Create the table and pie chart with details from the DB.
             ArrayList<CostOrIncome> myArray = vm.getAllCostsAndIncomes();
             Object data[] = new Object[5];
             ArrayList<Category> categoryArray = vm.getAllCategories();
@@ -92,7 +96,7 @@ public class DetailsFrame extends JFrame {
                 pieDataSet.setValue(dataPie[m].getName(),dataPie[m].getCount());
             }
             chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
-            plot = (PiePlot3D)chart.getPlot();
+
 
         costAndIncomeTable = new JTable(model);
         jsp = new JScrollPane();
@@ -103,6 +107,7 @@ public class DetailsFrame extends JFrame {
         this.vm = vm;
     }
 
+    //Organize all things inside this frame.
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -125,42 +130,53 @@ public class DetailsFrame extends JFrame {
         panelSouth.add(idForDelete);
         panelSouth.add(delete);
         frame.add(panelSouth,BorderLayout.SOUTH);
+        //Delete expense or incomes from the DB and refresh the table and pie with this change.
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int id = 0, n = 0;
                 try {
+                    //Take from the user the id of the CostOrIncome item.
                     id = Integer.parseInt(idForDelete.getText());
                 }catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "id must have value", "Error!", HEIGHT);
+                    //If the user don't give us a number.
+                    JOptionPane.showMessageDialog(null, "Id must have value", "Error!", HEIGHT);
                 }
+                //Delete the CostOrIncome item with the id.
                 vm.deleteCostOrIncome(id);
                 Date dateFrom = null;
                 Date dateTo = null;
                 try {
+                    //Take dates from the user.
                     dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.datePicker.getJFormattedTextField().getText());
                     dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.datePicker.getJFormattedTextField().getText());
                 } catch (ParseException e) {
+                    //Put 1 in n if the user don't put dates.
                    n = 1;
                 }
                 if(n == 1){
+                    //Show to the user all the details without dates or expense/income specifics.
                     changeTheTableAndPie(vm.getAllCostsAndIncomes(),1);
                 }
                 else{
                 boolean checkedIncomes,checkedExpenses;
                 checkedIncomes = incomes.isSelected();
                 checkedExpenses = expenses.isSelected();
+                //Show to the user all the details between dates.
                 if(checkedExpenses && checkedIncomes){
                         changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
                 }
+                //Show to the user only the incomes details between dates.
                 else if(checkedIncomes){
 
                         changeTheTableAndPie(vm.getAllIncomesBetweenDates(dateFrom,dateTo),1);
                 }
+                //Show to the user only the expenses details between dates.
                 else if(checkedExpenses){
 
                         changeTheTableAndPie(vm.getAllCostsBetweenDates(dateFrom,dateTo),-1);
                 }
+                //Remove all the details from the table and oie diagram.
                 else{
                     model.getDataVector().removeAllElements();
                     model.fireTableDataChanged();
@@ -169,6 +185,7 @@ public class DetailsFrame extends JFrame {
             }
             }
         });
+        //This button return the user to the StartFrame.
         homePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -177,12 +194,14 @@ public class DetailsFrame extends JFrame {
                 frame.dispose();
             }
         });
+        //This button take details from the user and show information accordingly.
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Date dateFrom = null;
                 Date dateTo = null;
                 try {
+                    //Take dates from the user.
                     dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.datePicker.getJFormattedTextField().getText());
                     dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.datePicker.getJFormattedTextField().getText());
                 } catch (ParseException e) {
@@ -191,18 +210,22 @@ public class DetailsFrame extends JFrame {
                 boolean checkedIncomes,checkedExpenses;
                 checkedIncomes = incomes.isSelected();
                 checkedExpenses = expenses.isSelected();
+                //Show to the user all the details between dates.
                 if(checkedExpenses && checkedIncomes){
 
                     changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
                 }
+                //Show to the user only the incomes details between dates.
                 else if(checkedIncomes){
 
                     changeTheTableAndPie(vm.getAllIncomesBetweenDates(dateFrom,dateTo),1);
                 }
+                //Show to the user only the expenses details between dates.
                 else if(checkedExpenses){
 
                     changeTheTableAndPie(vm.getAllCostsBetweenDates(dateFrom,dateTo),-1);
                 }
+                //Remove all the details from the table and oie diagram.
                 else{
                     model.getDataVector().removeAllElements();
                     model.fireTableDataChanged();
@@ -212,6 +235,7 @@ public class DetailsFrame extends JFrame {
 
             }
         });
+        //When the user close the screen the program shutdown.
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -222,6 +246,7 @@ public class DetailsFrame extends JFrame {
 
     }
 
+    //Refresh to the table and pie diagram.
     private void changeTheTableAndPie(ArrayList<CostOrIncome> myArray,int n) {
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
@@ -229,8 +254,10 @@ public class DetailsFrame extends JFrame {
 
         Object data[] = new Object[5];
         ArrayList<Category> categoryArray = null;
+        //Get all the categories from the DB.
         categoryArray = vm.getAllCategories();
         DataForPie[] dataPie = new DataForPie[categoryArray.size()];
+        //Put inside the array dataPie all the category name we get from DB.
         for(int i=0;i<categoryArray.size();i++) {
             String name = categoryArray.get(i).getCategoryName();
             dataPie[i] = new DataForPie(name);
@@ -241,6 +268,7 @@ public class DetailsFrame extends JFrame {
             double cost = myArray.get(i).getCost();
             Date date = myArray.get(i).getDate();
             Category category = myArray.get(i).getCategory();
+            //Count all the expenses/incomes we get by categories, n give us information on what the user wants to view.
             for(int k = 0;k<categoryArray.size();k++){
                 if(category.getCategoryName().equals(dataPie[k].getName())){
                     dataPie[k].setCount(dataPie[k].getCount()+(cost*n));
@@ -251,13 +279,15 @@ public class DetailsFrame extends JFrame {
             data[2] = cost;
             data[3] = date;
             data[4] = category.getCategoryName();
+            //Upload the details to the table.
            model.addRow(data);
         }
+        //Upload the details to the pie diagram.
         for(int m=0;m<dataPie.length;m++){
             pieDataSet.setValue(dataPie[m].getName(),dataPie[m].getCount());
         }
+        //Refresh the frame with the new details inside table and pie chart.
         chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
-        plot = (PiePlot3D)chart.getPlot();
         model.fireTableDataChanged();
         chartPanel.getChart().fireChartChanged();
 

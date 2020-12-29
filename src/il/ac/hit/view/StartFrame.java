@@ -1,8 +1,5 @@
 package il.ac.hit.view;
 
-
-import il.ac.hit.model.CostManagerException;
-import il.ac.hit.model.DerbyDBModel;
 import il.ac.hit.viewModel.IViewModel;
 
 import javax.swing.*;
@@ -16,29 +13,23 @@ public class StartFrame {
     private IViewModel vm;
     private JFrame frame;
     private JPanel panelNorth,panelWest,panelCenter;
-    private JButton showMyExpenseIncome,addNewExpenseIncome,addNewCategory;
+    private JButton showMyExpenseIncome,addNewExpenseIncome,addOrDeleteNewCategory;
     private JLabel icon,showBalance,title;
     private double balance;
 
-
+    //Create all things include this frame.
     public StartFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
-        DerbyDBModel db = null;
-        try {
-            db = new DerbyDBModel();
-        } catch (CostManagerException e) {
-            JOptionPane.showMessageDialog(null,e.getMessage());
-        }
         showMyExpenseIncome = new JButton("Show my expense and income");
         addNewExpenseIncome = new JButton("Add new expense or income");
-        addNewCategory = new JButton("Add or delete category");
-        icon = new JLabel(new ImageIcon("Image.png"));
+        addOrDeleteNewCategory = new JButton("Add or delete category");
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
         balance = vm.getTheBalance();
         showBalance = new JLabel("Hey user,\n your balance is :" + balance);
+        icon = new JLabel(new ImageIcon("Image.png"));
         title = new JLabel("Cost Manager");
         title.setFont(new Font("serif",Font.PLAIN,40));
         showBalance.setFont(new Font("serif",Font.PLAIN,40));
@@ -49,6 +40,7 @@ public class StartFrame {
         this.vm = vm;
     }
 
+    //Organize all things inside this frame.
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -61,12 +53,13 @@ public class StartFrame {
         frame.add(panelNorth,BorderLayout.NORTH);
         panelWest.add(showMyExpenseIncome);
         panelWest.add(addNewExpenseIncome);
-        panelWest.add(addNewCategory);
+        panelWest.add(addOrDeleteNewCategory);
         frame.add(panelWest,BorderLayout.WEST);
         panelCenter.add(showBalance,BorderLayout.CENTER);
         frame.add(panelCenter,BorderLayout.CENTER);
 
 
+        //This button move the user to the AddCostOrIncomeFrame.
         addNewExpenseIncome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -75,7 +68,8 @@ public class StartFrame {
                 frame.dispose();
             }
         });
-        addNewCategory.addActionListener(new ActionListener() {
+        //This button move the user to the AddOrDeleteCategoryFrame.
+        addOrDeleteNewCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 AddOrDeleteCategoryFrame addOrDeleteCategoryFrame = new AddOrDeleteCategoryFrame(vm);
@@ -83,12 +77,14 @@ public class StartFrame {
                 frame.dispose();
             }
         });
+        //When the user close the screen the program shutdown.
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         });
+        //This button move the user to the DetailsFrame.
         showMyExpenseIncome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
