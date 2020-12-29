@@ -131,42 +131,39 @@ public class DetailsFrame extends JFrame {
                 int id = 0, n = 0;
                 try {
                     id = Integer.parseInt(idForDelete.getText());
-                }catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "id must have value", "Error!", HEIGHT);
-                }
-                vm.deleteCostOrIncome(id);
-                Date dateFrom = null;
-                Date dateTo = null;
-                try {
-                    dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.datePicker.getJFormattedTextField().getText());
-                    dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.datePicker.getJFormattedTextField().getText());
-                } catch (ParseException e) {
-                   n = 1;
-                }
-                if(n == 1){
-                    changeTheTableAndPie(vm.getAllCostsAndIncomes(),1);
-                }
-                else{
-                boolean checkedIncomes,checkedExpenses;
-                checkedIncomes = incomes.isSelected();
-                checkedExpenses = expenses.isSelected();
-                if(checkedExpenses && checkedIncomes){
-                        changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
-                }
-                else if(checkedIncomes){
 
-                        changeTheTableAndPie(vm.getAllIncomesBetweenDates(dateFrom,dateTo),1);
-                }
-                else if(checkedExpenses){
+                    vm.deleteCostOrIncome(id);
+                    Date dateFrom = null;
+                    Date dateTo = null;
+                    try {
+                        dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.datePicker.getJFormattedTextField().getText());
+                        dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.datePicker.getJFormattedTextField().getText());
+                    } catch (ParseException e) {
+                        n = 1;
+                    }
+                    if (n == 1) {
+                        changeTheTableAndPie(vm.getAllCostsAndIncomes(), 1);
+                    } else {
+                        boolean checkedIncomes, checkedExpenses;
+                        checkedIncomes = incomes.isSelected();
+                        checkedExpenses = expenses.isSelected();
+                        if (checkedExpenses && checkedIncomes) {
+                            changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom, dateTo), 1);
+                        } else if (checkedIncomes) {
 
-                        changeTheTableAndPie(vm.getAllCostsBetweenDates(dateFrom,dateTo),-1);
+                            changeTheTableAndPie(vm.getAllIncomesBetweenDates(dateFrom, dateTo), 1);
+                        } else if (checkedExpenses) {
+
+                            changeTheTableAndPie(vm.getAllCostsBetweenDates(dateFrom, dateTo), -1);
+                        } else {
+                            model.getDataVector().removeAllElements();
+                            model.fireTableDataChanged();
+                            pieDataSet.clear();
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "id must be an integer", "Error!", HEIGHT);
                 }
-                else{
-                    model.getDataVector().removeAllElements();
-                    model.fireTableDataChanged();
-                    pieDataSet.clear();
-                }
-            }
             }
         });
         homePage.addActionListener(new ActionListener() {

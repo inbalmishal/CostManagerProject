@@ -156,35 +156,34 @@ public class AddCostOrIncomeFrame extends JFrame {
                 double cost = 0;
                 try {
                     cost = Double.parseDouble(costText.getText());
-                } catch(NumberFormatException  e) {
+
+                    Date date = null;
+                    try {
+                        date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
+                    } catch (ParseException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", HEIGHT);
+                    }
+                    Category category = new Category(chosenCategory.getSelectedItem().toString());
+                    String currency = chosenCurrency.getSelectedItem().toString();
+                    switch (currency) {
+                        case "EUR":
+                            EUR.setExchangeRate(3.9355);
+                            cost = EUR.convertToShekels(cost);
+                            break;
+                        case "USD":
+                            USD.setExchangeRate(3.2224);
+                            cost = USD.convertToShekels(cost);
+                            break;
+                    }
+                    CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+
+                    vm.addCostOrIncome(costOrIncome);
+                } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "the cost must be a double", "Error!", HEIGHT);
                 }
-
-                Date date = null;
-                try {
-                     date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
-                } catch (ParseException e) {
-                    JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
-                }
-                Category category = new Category(chosenCategory.getSelectedItem().toString());
-                String currency = chosenCurrency.getSelectedItem().toString();
-                switch (currency){
-                    case "EUR":
-                        EUR.setExchangeRate(3.9355);
-                        cost = EUR.convertToShekels(cost);
-                        break;
-                    case "USD":
-                        USD.setExchangeRate(3.2224);
-                        cost = USD.convertToShekels(cost);
-                        break;
-                }
-                CostOrIncome costOrIncome = null;
-                try {
-                     costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
-                } catch (NullPointerException e) { }
-                vm.addCostOrIncome(costOrIncome);
             }
         });
+
 
         homePage.addActionListener(new ActionListener() {
             @Override
