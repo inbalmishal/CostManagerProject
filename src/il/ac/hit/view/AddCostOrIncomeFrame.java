@@ -160,9 +160,6 @@ public class AddCostOrIncomeFrame extends JFrame {
                     Date date = null;
                     try {
                         date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
-                    } catch (ParseException e) {
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", HEIGHT);
-                    }
                     Category category = new Category(chosenCategory.getSelectedItem().toString());
                     String currency = chosenCurrency.getSelectedItem().toString();
                     switch (currency) {
@@ -178,6 +175,9 @@ public class AddCostOrIncomeFrame extends JFrame {
                     CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
 
                     vm.addCostOrIncome(costOrIncome);
+                    } catch (ParseException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", HEIGHT);
+                    }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "the cost must be a double", "Error!", HEIGHT);
                 }
