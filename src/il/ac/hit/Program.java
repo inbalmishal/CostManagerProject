@@ -4,8 +4,6 @@ import il.ac.hit.model.*;
 import il.ac.hit.view.*;
 import il.ac.hit.viewModel.*;
 
-import javax.swing.*;
-
 
 public class Program {
     public static void main(String[] args) {
