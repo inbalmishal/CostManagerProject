@@ -12,7 +12,8 @@ import java.util.Date;
 public interface IViewModel {
     public void setView(IView view);
     public void setModel(IModel model);
-    public void showMessage(String text); // he did it but i think we don't need it
+    public void showGoodMessage(String text);
+    public void showBadMessage(String text);
 
     public void addCostOrIncome(CostOrIncome item);
     public void deleteCostOrIncome(int id);

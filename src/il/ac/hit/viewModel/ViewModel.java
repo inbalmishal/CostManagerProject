@@ -3,12 +3,8 @@ package il.ac.hit.viewModel;
 import il.ac.hit.model.*;
 import il.ac.hit.view.*;
 
-import javax.naming.CompoundName;
-import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import java.util.concurrent.*;
 
 public class ViewModel implements IViewModel {
@@ -31,7 +27,14 @@ public class ViewModel implements IViewModel {
     }
 
     @Override
-    public void showMessage(String text) { }
+    public void showGoodMessage(String text) {
+        view.showGoodMessage(text);
+    }
+
+    @Override
+    public void showBadMessage(String text) {
+        view.showBadMessage(text);
+    }
 
     @Override
     public void addCostOrIncome(CostOrIncome item){
@@ -40,12 +43,14 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.addCostOrIncome(item);
-                    view.showGoodMassage("The object has been added");
+                    showGoodMessage("The object has been added");
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
+
             }
         });
+
     }
 
     @Override
@@ -55,9 +60,9 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.deleteCostOrIncome(id);
-                    view.showGoodMassage("The object has been deleted");
+                    showGoodMessage("The object has been deleted");
                 } catch (CostManagerException e) {
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         });
@@ -71,9 +76,9 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.addNewCategory(item);
-                    view.showGoodMassage("The category was added successfully");
+                    showGoodMessage("The category was added successfully");
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         });
@@ -86,9 +91,9 @@ public class ViewModel implements IViewModel {
             public void run() {
                 try {
                     model.deleteCategory(category);
-                    view.showGoodMassage("The category has been deleted");
+                    showGoodMessage("The category has been deleted");
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         });
@@ -104,7 +109,7 @@ public class ViewModel implements IViewModel {
                 try {
                     item[0] = model.getAllCostsBetweenDates(from,to);
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         }, item[0]);
@@ -128,7 +133,7 @@ public class ViewModel implements IViewModel {
                 try {
                     item[0] = model.getAllIncomesBetweenDates(from,to);
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         }, item[0]);
@@ -152,7 +157,7 @@ public class ViewModel implements IViewModel {
                 try {
                     item[0] = model.getAllCostsAndIncomesBetweenDates(from,to);
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         }, item[0]);
@@ -176,7 +181,7 @@ public class ViewModel implements IViewModel {
                 try {
                     balance[0] = model.getTheBalance();
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         }, balance[0]);
@@ -200,7 +205,7 @@ public class ViewModel implements IViewModel {
             try {
                 item[0] = model.getAllCostsAndIncomes();
             }catch(CostManagerException e){
-                view.showBadMassage(e.getMessage());
+                showBadMessage(e.getMessage());
             }
         }
     }, item[0]);
@@ -223,7 +228,7 @@ public class ViewModel implements IViewModel {
                 try {
                     categories[0] = model.getAllCategories();
                 }catch(CostManagerException e){
-                    view.showBadMassage(e.getMessage());
+                    showBadMessage(e.getMessage());
                 }
             }
         }, categories[0]);

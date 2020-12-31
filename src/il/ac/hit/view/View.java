@@ -34,7 +34,7 @@ public class View implements IView {
     }
 
     @Override
-    public void showGoodMassage(String text) {
+    public void showGoodMessage(String text) {
         if(SwingUtilities.isEventDispatchThread()){
             JOptionPane.showMessageDialog(null,text,"Success!",HEIGHT,okIcon);
         }else {
@@ -48,7 +48,7 @@ public class View implements IView {
     }
 
     @Override
-    public void showBadMassage(String text) {
+    public void showBadMessage(String text) {
         if(SwingUtilities.isEventDispatchThread()){
             JOptionPane.showMessageDialog(null,text,"Error!",HEIGHT);
         }else {

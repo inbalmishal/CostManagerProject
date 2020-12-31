@@ -5,6 +5,6 @@ import il.ac.hit.viewModel.IViewModel;
 public interface IView {
     public void start();
     public void setViewModel(IViewModel vm);
-    public void showGoodMassage(String text);
-    public void showBadMassage(String text);
+    public void showGoodMessage(String text);
+    public void showBadMessage(String text);
 }
