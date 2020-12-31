@@ -58,6 +58,7 @@ public class StartFrame {
         panelCenter.add(showBalance,BorderLayout.CENTER);
         frame.add(panelCenter,BorderLayout.CENTER);
 
+        //Adding events listeners.
 
         //This button move the user to the AddCostOrIncomeFrame.
         addNewExpenseIncome.addActionListener(new ActionListener() {

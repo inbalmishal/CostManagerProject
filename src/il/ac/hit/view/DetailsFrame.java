@@ -130,6 +130,9 @@ public class DetailsFrame extends JFrame {
         panelSouth.add(idForDelete);
         panelSouth.add(delete);
         frame.add(panelSouth,BorderLayout.SOUTH);
+
+        //Adding events listeners.
+
         //Delete expense or incomes from the DB and refresh the table and pie with this change.
         delete.addActionListener(new ActionListener() {
             @Override
