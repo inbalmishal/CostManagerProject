@@ -17,7 +17,7 @@ public class StartFrame {
     private JLabel icon,showBalance,title;
     private double balance;
 
-    //Create all things include this frame.
+    //Create all the components in this frame.
     public StartFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
@@ -33,14 +33,13 @@ public class StartFrame {
         title = new JLabel("Cost Manager");
         title.setFont(new Font("serif",Font.PLAIN,40));
         showBalance.setFont(new Font("serif",Font.PLAIN,40));
-
     }
 
     public void setVm(IViewModel vm) {
         this.vm = vm;
     }
 
-    //Organize all things inside this frame.
+    //Organize all the components in this frame.
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);

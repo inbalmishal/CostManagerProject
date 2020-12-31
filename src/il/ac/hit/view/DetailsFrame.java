@@ -42,7 +42,7 @@ public class DetailsFrame extends JFrame {
     private ChartPanel chartPanel;
     private ImageIcon okIcon;
 
-    //Create all things include this frame.
+    //Create all the components in this frame.
     DetailsFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
@@ -107,7 +107,7 @@ public class DetailsFrame extends JFrame {
         this.vm = vm;
     }
 
-    //Organize all things inside this frame.
+    //Organize all the components in this frame.
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -198,6 +198,7 @@ public class DetailsFrame extends JFrame {
             }
         });
         //This button take details from the user and show information accordingly.
+
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -238,6 +239,7 @@ public class DetailsFrame extends JFrame {
 
             }
         });
+
         //When the user close the screen the program shutdown.
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -295,5 +297,4 @@ public class DetailsFrame extends JFrame {
         chartPanel.getChart().fireChartChanged();
 
     }
-
 }

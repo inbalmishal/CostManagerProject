@@ -13,23 +13,23 @@ import java.util.ArrayList;
 
 public class AddOrDeleteCategoryFrame extends JFrame {
     private IViewModel vm;
+    private JFrame frame;
     private JPanel panelNorth;
     private JPanel panelWest;
     private JPanel panelCenter;
-    private JFrame frame;
-
-    private JButton add,delete;
-    private JTextField category;
-    private JLabel newCategoryName;
-    private JTextArea categoryList;
-    private JScrollPane jsp;
+    private JButton add;
+    private JButton delete;
     private JButton refreshCategories;
-
+    private JButton homePage;
+    private JTextField category;
+    private JTextArea categoryList;
+    private JLabel newCategoryName;
     private JLabel title;
     private JLabel listTitle;
-    private JButton homePage;
     private JLabel icon;
+    private JScrollPane jsp;
 
+    //Create all the components in this frame.
     AddOrDeleteCategoryFrame(IViewModel vm){
         setVm(vm);
         frame = new JFrame("Add/Delete Category");
@@ -46,18 +46,16 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         refreshCategories = new JButton("Refresh Categories");
         title = new JLabel("Add/Delete Category");
         homePage = new JButton("homePage");
-        icon = new JLabel();
 
+        //create img and change it's size
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File("categories.jpg"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
         }
-
         Image dImg = img.getScaledInstance(450, 350, Image.SCALE_SMOOTH);
-        ImageIcon categoryImage = new ImageIcon(dImg);
-        icon.setIcon(categoryImage);
+        icon = new JLabel(new ImageIcon(dImg));
 
         jsp = new JScrollPane();
     }
@@ -66,6 +64,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         this.vm = vm;
     }
 
+    //Organize all the components in this frame.
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,650);
@@ -106,29 +105,38 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         jsp.setViewportView(categoryList);
         frame.add(panelWest, BorderLayout.WEST);
 
+        //Adding events listeners.
+        //delete category from the DB.
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //get the category from the user, create the category object and delete it from the DB
                 String s = category.getText();
                 Category category = new Category(s);
                 vm.deleteCategory(category);
             }
         });
 
+        //add category to the DB.
         add.addActionListener(new ActionListener() { //connect to the VM
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //get the category from the user, create the category object and add it to the DB
                 String s = category.getText();
                 Category category = new Category(s);
                 vm.addNewCategory(category);
             }
         });
 
+        //refresh the category list according to the current state
         refreshCategories.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //get the categories from the DB
                 ArrayList<Category> categories = vm.getAllCategories();
+                //clear the text area
                 categoryList.setText("");
+                //insert each category from the DB to the text area
                 for(Category category:categories){
                     categoryList.append(category.toString());
                     categoryList.append("\n");
@@ -136,6 +144,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
             }
         });
 
+        //This button return the user to the StartFrame.
         homePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -144,6 +153,8 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                 frame.dispose();
             }
         });
+
+        //When the user close the screen the program shutdown.
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -152,5 +163,4 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         });
         frame.setVisible(true);
     }
-
 }

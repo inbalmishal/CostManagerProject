@@ -20,36 +20,31 @@ import static il.ac.hit.view.Currency.*;
 
 public class AddCostOrIncomeFrame extends JFrame {
     private IViewModel vm;
+    private JFrame frame;
     private JPanel panelNorth;
     private JPanel panelCenter;
     private JPanel panelSouth;
-    private JFrame frame;
-    private ImageIcon okIcon;
-
-    private JLabel title;
     private JPanel descriptionPanel;
-    private JLabel description;
-    private JTextField descriptionText;
-
     private JPanel costPanel;
-    private JLabel cost;
-    private JTextField costText;
-
     private JPanel datePanel;
-    private JLabel date;
-    private CreateJDatePicker datePicker;
-
     private JPanel categoryPanel;
-    private JLabel category;
-    private JComboBox chosenCategory;
-
     private JPanel currencyPanel;
+    private JLabel title;
+    private JLabel description;
+    private JLabel cost;
+    private JLabel date;
+    private JLabel category;
     private JLabel currency;
-    private JComboBox chosenCurrency;
-
+    private JTextField descriptionText;
+    private JTextField costText;
     private JButton add;
     private JButton homePage;
+    private CreateJDatePicker datePicker;
+    private JComboBox chosenCategory;
+    private JComboBox chosenCurrency;
+    private ImageIcon okIcon;
 
+    //Create all the components in this frame.
     AddCostOrIncomeFrame(IViewModel vm) {
         setVm(vm);
         panelNorth = new JPanel();
@@ -68,6 +63,7 @@ public class AddCostOrIncomeFrame extends JFrame {
 
         //call to function that charges the categories from the db to this JComboBox
         chosenCategory = createChosenCategory();
+        //call to function that fill this JComboBox
         chosenCurrency = createChosenCurrency();
 
         add = new JButton("add");
@@ -84,6 +80,7 @@ public class AddCostOrIncomeFrame extends JFrame {
         this.vm = vm;
     }
 
+    //the function that charges the categories from the db to the category JComboBox
     public JComboBox createChosenCategory() {
         JComboBox categoriesJCombox = null;
         ArrayList<Category> categories = vm.getAllCategories();
@@ -94,7 +91,7 @@ public class AddCostOrIncomeFrame extends JFrame {
         categoriesJCombox = new JComboBox(categoriesNames);
         return categoriesJCombox;
     }
-
+    //the function that fill the currency JComboBox
     public JComboBox createChosenCurrency(){
         JComboBox currenciesJCombox = null;
         String[] Currencies = {"ILS","USD","EUR"};
@@ -102,6 +99,7 @@ public class AddCostOrIncomeFrame extends JFrame {
         return currenciesJCombox;
     }
 
+    //Organize all the components in this frame.
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -149,42 +147,57 @@ public class AddCostOrIncomeFrame extends JFrame {
         panelSouth.setBackground(new Color(240,240,255));
         frame.add(panelSouth, BorderLayout.SOUTH);
 
+        //Adding events listeners.
+        //add expense or incomes to the DB.
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                //Take from the user the description of the CostOrIncome item.
                 String desc = descriptionText.getText();
+                /*Take from the user the cost of the CostOrIncome item.
+                if it's not number a message will be displayed*/
                 double cost = 0;
                 try {
                     cost = Double.parseDouble(costText.getText());
 
+                    /*Take from the user the date.
+                    if no date inserted a message will be displayed*/
                     Date date = null;
                     try {
                         date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
-                    Category category = new Category(chosenCategory.getSelectedItem().toString());
-                    String currency = chosenCurrency.getSelectedItem().toString();
-                    switch (currency) {
-                        case "EUR":
-                            EUR.setExchangeRate(3.9355);
-                            cost = EUR.convertToShekels(cost);
-                            break;
-                        case "USD":
-                            USD.setExchangeRate(3.2224);
-                            cost = USD.convertToShekels(cost);
-                            break;
-                    }
-                    CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
 
-                    vm.addCostOrIncome(costOrIncome);
+                        //Take from the user the category of the CostOrIncome item.
+                        Category category = new Category(chosenCategory.getSelectedItem().toString());
+
+                        //Take from the user the currency of the cost and converts it to shekels(ILS).
+                        String currency = chosenCurrency.getSelectedItem().toString();
+                        switch (currency) {
+                            case "EUR":
+                                EUR.setExchangeRate(3.9355);
+                                cost = EUR.convertToShekels(cost);
+                                break;
+                            case "USD":
+                                USD.setExchangeRate(3.2224);
+                                cost = USD.convertToShekels(cost);
+                                break;
+                        }
+                        //create the item according to the details of the user
+                        CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+
+                        //add the item to the db
+                        vm.addCostOrIncome(costOrIncome);
                     } catch (ParseException e) {
+                        //If the user don't give us a date.
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", HEIGHT);
                     }
                 } catch (NumberFormatException e) {
+                    //If the user don't give us a number in the cost.
                     JOptionPane.showMessageDialog(null, "the cost must be a double", "Error!", HEIGHT);
                 }
             }
         });
 
-
+        //This button return the user to the StartFrame.
         homePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -193,6 +206,8 @@ public class AddCostOrIncomeFrame extends JFrame {
                 frame.dispose();
             }
         });
+
+        //When the user close the screen the program shutdown.
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
