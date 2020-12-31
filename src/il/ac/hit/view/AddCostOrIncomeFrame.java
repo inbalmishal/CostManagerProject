@@ -42,6 +42,8 @@ public class AddCostOrIncomeFrame extends JFrame {
     private CreateJDatePicker datePicker;
     private JComboBox cbChosenCategory;
     private JComboBox cbChosenCurrency;
+    private JCheckBox cbExpenses;
+    private JCheckBox cbIncomes;
     private ImageIcon imageIconOk;
 
     //Create all the components in this frame.
@@ -57,6 +59,8 @@ public class AddCostOrIncomeFrame extends JFrame {
         tfDescription = new JTextField(40);
         lbCost = new JLabel("cost:");
         tfCost = new JTextField(40);
+        cbIncomes = new JCheckBox("income ");
+        cbExpenses = new JCheckBox(("expense "));
         lbDate = new JLabel("date:");
         lbCategory = new JLabel("category:");
         lbCurrency = new JLabel("currency:");
@@ -120,6 +124,8 @@ public class AddCostOrIncomeFrame extends JFrame {
 
         costPanel.add(lbCost);
         costPanel.add(tfCost);
+        costPanel.add(cbIncomes);
+        costPanel.add(cbExpenses);
         costPanel.setBackground(new Color(240,240,255));
         panelCenter.add(costPanel);
 
@@ -181,11 +187,23 @@ public class AddCostOrIncomeFrame extends JFrame {
                                 cost = USD.convertToShekels(cost);
                                 break;
                         }
-                        //create the item according to the details of the user
-                        CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+                        boolean checkedIncomes,checkedExpenses;
+                        checkedIncomes = cbIncomes.isSelected();
+                        checkedExpenses = cbExpenses.isSelected();
 
-                        //add the item to the db
-                        vm.addCostOrIncome(costOrIncome);
+                        //create the item according to the details of the user and add the item to the db.
+                        if((checkedExpenses && checkedIncomes) || (!checkedExpenses && !checkedIncomes)){
+                            JOptionPane.showMessageDialog(null, "Choose whether it is an expense or an income !", "Error!", HEIGHT);
+                        }
+                        else if(checkedExpenses){
+                            CostOrIncome costOrIncome = new CostOrIncome(desc, -cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+                            vm.addCostOrIncome(costOrIncome);
+                        }
+                        else{
+                            CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+                            vm.addCostOrIncome(costOrIncome);
+                        }
+
                     } catch (ParseException e) {
                         //If the user don't give us a date.
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", HEIGHT);

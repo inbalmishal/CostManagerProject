@@ -55,8 +55,8 @@ public class DetailsFrame extends JFrame {
         panelCenter = new JPanel();
         panelSouth = new JPanel();
         tfIdForDelete = new JTextField(10);
-        cbIncomes = new JCheckBox("incomes: ");
-        cbExpenses = new JCheckBox(("expenses: "));
+        cbIncomes = new JCheckBox("incomes ");
+        cbExpenses = new JCheckBox(("expenses "));
         lbDateFrom = new JLabel("From:");
         lbDateTo = new JLabel("To:");
         lbDeleteId = new JLabel("id for delete: ");
