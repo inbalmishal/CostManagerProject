@@ -1,5 +1,6 @@
 package il.ac.hit.view;
 
+//Stores the pie chart data.
 public class DataForPie {
     private String name;
     private double count = 0;

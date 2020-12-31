@@ -13,26 +13,26 @@ public class StartFrame {
     private IViewModel vm;
     private JFrame frame;
     private JPanel panelNorth,panelWest,panelCenter;
-    private JButton showMyExpenseIncome,addNewExpenseIncome,addOrDeleteNewCategory;
-    private JLabel icon,showBalance,title;
+    private JButton btShowMyExpenseIncome, btAddNewExpenseIncome, btAddOrDeleteNewCategory;
+    private JLabel lbIcon, lbShowBalance, lbTitle;
     private double balance;
 
     //Create all the components in this frame.
     public StartFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
-        showMyExpenseIncome = new JButton("Show my expense and income");
-        addNewExpenseIncome = new JButton("Add new expense or income");
-        addOrDeleteNewCategory = new JButton("Add or delete category");
+        btShowMyExpenseIncome = new JButton("Show my expense and income");
+        btAddNewExpenseIncome = new JButton("Add new expense or income");
+        btAddOrDeleteNewCategory = new JButton("Add or delete category");
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
         balance = vm.getTheBalance();
-        showBalance = new JLabel("Hey user,\n your balance is :" + balance);
-        icon = new JLabel(new ImageIcon("Image.png"));
-        title = new JLabel("Cost Manager");
-        title.setFont(new Font("serif",Font.PLAIN,40));
-        showBalance.setFont(new Font("serif",Font.PLAIN,40));
+        lbShowBalance = new JLabel("Hey user,\n your balance is :" + balance);
+        lbIcon = new JLabel(new ImageIcon("Image.png"));
+        lbTitle = new JLabel("Cost Manager");
+        lbTitle.setFont(new Font("serif",Font.PLAIN,40));
+        lbShowBalance.setFont(new Font("serif",Font.PLAIN,40));
     }
 
     public void setVm(IViewModel vm) {
@@ -47,20 +47,20 @@ public class StartFrame {
         panelNorth.setBackground(Color.white);
         panelWest.setLayout(new GridLayout(3,1));
         panelCenter.setLayout(new BorderLayout());
-        panelNorth.add(icon,BorderLayout.WEST);
-        panelNorth.add(title);
+        panelNorth.add(lbIcon,BorderLayout.WEST);
+        panelNorth.add(lbTitle);
         frame.add(panelNorth,BorderLayout.NORTH);
-        panelWest.add(showMyExpenseIncome);
-        panelWest.add(addNewExpenseIncome);
-        panelWest.add(addOrDeleteNewCategory);
+        panelWest.add(btShowMyExpenseIncome);
+        panelWest.add(btAddNewExpenseIncome);
+        panelWest.add(btAddOrDeleteNewCategory);
         frame.add(panelWest,BorderLayout.WEST);
-        panelCenter.add(showBalance,BorderLayout.CENTER);
+        panelCenter.add(lbShowBalance,BorderLayout.CENTER);
         frame.add(panelCenter,BorderLayout.CENTER);
 
         //Adding events listeners.
 
         //This button move the user to the AddCostOrIncomeFrame.
-        addNewExpenseIncome.addActionListener(new ActionListener() {
+        btAddNewExpenseIncome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 AddCostOrIncomeFrame addCostOrIncomeFrame = new AddCostOrIncomeFrame(vm);
@@ -69,7 +69,7 @@ public class StartFrame {
             }
         });
         //This button move the user to the AddOrDeleteCategoryFrame.
-        addOrDeleteNewCategory.addActionListener(new ActionListener() {
+        btAddOrDeleteNewCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 AddOrDeleteCategoryFrame addOrDeleteCategoryFrame = new AddOrDeleteCategoryFrame(vm);
@@ -85,7 +85,7 @@ public class StartFrame {
             }
         });
         //This button move the user to the DetailsFrame.
-        showMyExpenseIncome.addActionListener(new ActionListener() {
+        btShowMyExpenseIncome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 DetailsFrame detailsFrame = new DetailsFrame(vm);

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
+//creating the component of put date.
 public class CreateJDatePicker {
     public JDatePickerImpl datePicker;
 

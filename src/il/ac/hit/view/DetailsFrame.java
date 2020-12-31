@@ -30,12 +30,12 @@ public class DetailsFrame extends JFrame {
     private JFrame frame;
     private JPanel panelNorth,panelWest,panelCenter,panelSouth;
     private CreateJDatePicker datePickerFrom,datePickerTo;
-    private JTextField idForDelete;
-    private JCheckBox incomes,expenses;
-    private JTable costAndIncomeTable;
-    private JButton ok,homePage,delete;
-    private DefaultTableModel model;
-    private JLabel dateFrom,dateTo,deleteId;
+    private JTextField tfIdForDelete;
+    private JCheckBox cbIncomes, cbExpenses;
+    private JTable tbCostAndIncomeTable;
+    private JButton btOk, btHomePage, btDelete;
+    private DefaultTableModel tbModel;
+    private JLabel lbDateFrom, lbDateTo, lbDeleteId;
     private JScrollPane jsp;
     private DefaultPieDataset pieDataSet;
     private JFreeChart chart;
@@ -47,20 +47,20 @@ public class DetailsFrame extends JFrame {
         setVm(vm);
         frame = new JFrame("Cost Manager");
         okIcon = new ImageIcon("ok.png");
-        ok = new JButton("OK");
-        homePage = new JButton("Home Page");
-        delete = new JButton("Delete");
+        btOk = new JButton("OK");
+        btHomePage = new JButton("Home Page");
+        btDelete = new JButton("Delete");
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
         panelSouth = new JPanel();
-        idForDelete = new JTextField(10);
-        incomes = new JCheckBox("incomes: ");
-        expenses = new JCheckBox(("expenses: "));
-        dateFrom = new JLabel("From:");
-        dateTo = new JLabel("To:");
-        deleteId = new JLabel("id for delete: ");
-        model = new DefaultTableModel(null, new Object[]{"id","description", "cost", "date", "category"});
+        tfIdForDelete = new JTextField(10);
+        cbIncomes = new JCheckBox("incomes: ");
+        cbExpenses = new JCheckBox(("expenses: "));
+        lbDateFrom = new JLabel("From:");
+        lbDateTo = new JLabel("To:");
+        lbDeleteId = new JLabel("id for delete: ");
+        tbModel = new DefaultTableModel(null, new Object[]{"id","description", "cost", "date", "category"});
         pieDataSet = new DefaultPieDataset();
 
         //Create the table and pie chart with details from the DB.
@@ -88,7 +88,7 @@ public class DetailsFrame extends JFrame {
             data[2] = cost;
             data[3] = date;
             data[4] = category.getCategoryName();
-            model.addRow(data);
+            tbModel.addRow(data);
 
         }
 
@@ -98,7 +98,7 @@ public class DetailsFrame extends JFrame {
         chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
 
 
-        costAndIncomeTable = new JTable(model);
+        tbCostAndIncomeTable = new JTable(tbModel);
         jsp = new JScrollPane();
         jsp.setBounds(215, 71, 615, 237);
     }
@@ -111,36 +111,36 @@ public class DetailsFrame extends JFrame {
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
-        panelNorth.add(dateFrom);
+        panelNorth.add(lbDateFrom);
         datePickerFrom = new CreateJDatePicker(panelNorth);
-        panelNorth.add(dateTo);
+        panelNorth.add(lbDateTo);
         datePickerTo = new CreateJDatePicker(panelNorth);
-        panelNorth.add(incomes);
-        panelNorth.add(expenses);
-        panelNorth.add(ok);
-        panelNorth.add(homePage);
+        panelNorth.add(cbIncomes);
+        panelNorth.add(cbExpenses);
+        panelNorth.add(btOk);
+        panelNorth.add(btHomePage);
         frame.add(panelNorth,BorderLayout.NORTH);
         panelCenter.setLayout(new GridLayout(1,2));
         panelCenter.add(jsp);
-        jsp.setViewportView(costAndIncomeTable);
+        jsp.setViewportView(tbCostAndIncomeTable);
         chartPanel = new ChartPanel(chart);
         panelCenter.add(chartPanel);
         frame.add(panelCenter,BorderLayout.CENTER);
-        panelSouth.add(deleteId);
-        panelSouth.add(idForDelete);
-        panelSouth.add(delete);
+        panelSouth.add(lbDeleteId);
+        panelSouth.add(tfIdForDelete);
+        panelSouth.add(btDelete);
         frame.add(panelSouth,BorderLayout.SOUTH);
 
         //Adding events listeners.
 
         //Delete expense or incomes from the DB and refresh the table and pie with this change.
-        delete.addActionListener(new ActionListener() {
+        btDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int id = 0, n = 0;
                 try {
                     //Take from the user the id of the CostOrIncome item.
-                    id = Integer.parseInt(idForDelete.getText());
+                    id = Integer.parseInt(tfIdForDelete.getText());
                 //Delete the CostOrIncome item with the id.
                 vm.deleteCostOrIncome(id);
                 Date dateFrom = null;
@@ -159,8 +159,8 @@ public class DetailsFrame extends JFrame {
                 }
                 else{
                     boolean checkedIncomes,checkedExpenses;
-                    checkedIncomes = incomes.isSelected();
-                    checkedExpenses = expenses.isSelected();
+                    checkedIncomes = cbIncomes.isSelected();
+                    checkedExpenses = cbExpenses.isSelected();
                     //Show to the user all the details between dates.
                     if(checkedExpenses && checkedIncomes){
                         changeTheTableAndPie(vm.getAllCostsAndIncomesBetweenDates(dateFrom,dateTo),1);
@@ -177,8 +177,8 @@ public class DetailsFrame extends JFrame {
                     }
                     //Remove all the details from the table and oie diagram.
                     else{
-                        model.getDataVector().removeAllElements();
-                        model.fireTableDataChanged();
+                        tbModel.getDataVector().removeAllElements();
+                        tbModel.fireTableDataChanged();
                         pieDataSet.clear();
                     }
                 }
@@ -189,7 +189,7 @@ public class DetailsFrame extends JFrame {
         }
         });
         //This button return the user to the StartFrame.
-        homePage.addActionListener(new ActionListener() {
+        btHomePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 StartFrame startFrame = new StartFrame(vm);
@@ -199,7 +199,7 @@ public class DetailsFrame extends JFrame {
         });
         //This button take details from the user and show information accordingly.
 
-        ok.addActionListener(new ActionListener() {
+        btOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Date dateFrom = null;
@@ -212,8 +212,8 @@ public class DetailsFrame extends JFrame {
                     JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
                 boolean checkedIncomes,checkedExpenses;
-                checkedIncomes = incomes.isSelected();
-                checkedExpenses = expenses.isSelected();
+                checkedIncomes = cbIncomes.isSelected();
+                checkedExpenses = cbExpenses.isSelected();
                 //Show to the user all the details between dates.
                 if(checkedExpenses && checkedIncomes){
 
@@ -231,8 +231,8 @@ public class DetailsFrame extends JFrame {
                 }
                 //Remove all the details from the table and oie diagram.
                 else{
-                    model.getDataVector().removeAllElements();
-                    model.fireTableDataChanged();
+                    tbModel.getDataVector().removeAllElements();
+                    tbModel.fireTableDataChanged();
                     pieDataSet.clear();
                 }
 
@@ -253,8 +253,8 @@ public class DetailsFrame extends JFrame {
 
     //Refresh to the table and pie diagram.
     private void changeTheTableAndPie(ArrayList<CostOrIncome> myArray,int n) {
-        model.getDataVector().removeAllElements();
-        model.fireTableDataChanged();
+        tbModel.getDataVector().removeAllElements();
+        tbModel.fireTableDataChanged();
         pieDataSet.clear();
 
         Object data[] = new Object[5];
@@ -285,7 +285,7 @@ public class DetailsFrame extends JFrame {
             data[3] = date;
             data[4] = category.getCategoryName();
             //Upload the details to the table.
-            model.addRow(data);
+            tbModel.addRow(data);
         }
         //Upload the details to the pie diagram.
         for(int m=0;m<dataPie.length;m++){
@@ -293,7 +293,7 @@ public class DetailsFrame extends JFrame {
         }
         //Refresh the frame with the new details inside table and pie chart.
         chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
-        model.fireTableDataChanged();
+        tbModel.fireTableDataChanged();
         chartPanel.getChart().fireChartChanged();
 
     }
