@@ -29,20 +29,20 @@ public class AddCostOrIncomeFrame extends JFrame {
     private JPanel datePanel;
     private JPanel categoryPanel;
     private JPanel currencyPanel;
-    private JLabel title;
-    private JLabel description;
-    private JLabel cost;
-    private JLabel date;
-    private JLabel category;
-    private JLabel currency;
-    private JTextField descriptionText;
-    private JTextField costText;
-    private JButton add;
-    private JButton homePage;
+    private JLabel lbTitle;
+    private JLabel lbDescription;
+    private JLabel lbCost;
+    private JLabel lbDate;
+    private JLabel lbCategory;
+    private JLabel lbCurrency;
+    private JTextField tfDescription;
+    private JTextField tfCost;
+    private JButton btAdd;
+    private JButton btHomePage;
     private CreateJDatePicker datePicker;
-    private JComboBox chosenCategory;
-    private JComboBox chosenCurrency;
-    private ImageIcon okIcon;
+    private JComboBox cbChosenCategory;
+    private JComboBox cbChosenCurrency;
+    private ImageIcon imageIconOk;
 
     //Create all the components in this frame.
     AddCostOrIncomeFrame(IViewModel vm) {
@@ -50,24 +50,24 @@ public class AddCostOrIncomeFrame extends JFrame {
         panelNorth = new JPanel();
         panelCenter = new JPanel();
         panelSouth = new JPanel();
-        okIcon = new ImageIcon("ok.png");
+        imageIconOk = new ImageIcon("ok.png");
         frame = new JFrame("Add New Category");
-        title = new JLabel("Add Income Or Expense");
-        description = new JLabel ("description:");
-        descriptionText = new JTextField(40);
-        cost = new JLabel("cost:");
-        costText = new JTextField(40);
-        date = new JLabel("date:");
-        category = new JLabel("category:");
-        currency = new JLabel("currency:");
+        lbTitle = new JLabel("Add Income Or Expense");
+        lbDescription = new JLabel ("description:");
+        tfDescription = new JTextField(40);
+        lbCost = new JLabel("cost:");
+        tfCost = new JTextField(40);
+        lbDate = new JLabel("date:");
+        lbCategory = new JLabel("category:");
+        lbCurrency = new JLabel("currency:");
 
         //call to function that charges the categories from the db to this JComboBox
-        chosenCategory = createChosenCategory();
+        cbChosenCategory = createChosenCategory();
         //call to function that fill this JComboBox
-        chosenCurrency = createChosenCurrency();
+        cbChosenCurrency = createChosenCurrency();
 
-        add = new JButton("add");
-        homePage = new JButton("homePage");
+        btAdd = new JButton("add");
+        btHomePage = new JButton("homePage");
 
         descriptionPanel = new JPanel();
         costPanel = new JPanel();
@@ -105,36 +105,36 @@ public class AddCostOrIncomeFrame extends JFrame {
         frame.setSize(1000,600);
 
         //north panel
-        title.setFont(new Font("serif", Font.PLAIN, 40));
-        panelNorth.add(title);
+        lbTitle.setFont(new Font("serif", Font.PLAIN, 40));
+        panelNorth.add(lbTitle);
         panelNorth.setBackground(new Color(255,255,255));
         frame.add(panelNorth, BorderLayout.NORTH);
 
         //center panel
         panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.PAGE_AXIS));
 
-        descriptionPanel.add(description);
-        descriptionPanel.add(descriptionText);
+        descriptionPanel.add(lbDescription);
+        descriptionPanel.add(tfDescription);
         descriptionPanel.setBackground(new Color(240,240,255));
         panelCenter.add(descriptionPanel);
 
-        costPanel.add(cost);
-        costPanel.add(costText);
+        costPanel.add(lbCost);
+        costPanel.add(tfCost);
         costPanel.setBackground(new Color(240,240,255));
         panelCenter.add(costPanel);
 
-        currencyPanel.add(currency);
-        currencyPanel.add(chosenCurrency);
+        currencyPanel.add(lbCurrency);
+        currencyPanel.add(cbChosenCurrency);
         currencyPanel.setBackground(new Color(240,240,255));
         panelCenter.add(currencyPanel);
 
-        datePanel.add(date);
+        datePanel.add(lbDate);
         datePicker = new CreateJDatePicker(datePanel);
         datePanel.setBackground(new Color(240,240,255));
         panelCenter.add(datePanel);
 
-        categoryPanel.add(category);
-        categoryPanel.add(chosenCategory);
+        categoryPanel.add(lbCategory);
+        categoryPanel.add(cbChosenCategory);
         categoryPanel.setBackground(new Color(240,240,255));
         panelCenter.add(categoryPanel);
 
@@ -142,23 +142,23 @@ public class AddCostOrIncomeFrame extends JFrame {
 
         //south panel
         panelSouth.setLayout((new FlowLayout()));
-        panelSouth.add(add);
-        panelSouth.add(homePage);
+        panelSouth.add(btAdd);
+        panelSouth.add(btHomePage);
         panelSouth.setBackground(new Color(240,240,255));
         frame.add(panelSouth, BorderLayout.SOUTH);
 
         //Adding events listeners.
         //add expense or incomes to the DB.
-        add.addActionListener(new ActionListener() {
+        btAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //Take from the user the description of the CostOrIncome item.
-                String desc = descriptionText.getText();
+                String desc = tfDescription.getText();
                 /*Take from the user the cost of the CostOrIncome item.
                 if it's not number a message will be displayed*/
                 double cost = 0;
                 try {
-                    cost = Double.parseDouble(costText.getText());
+                    cost = Double.parseDouble(tfCost.getText());
 
                     /*Take from the user the date.
                     if no date inserted a message will be displayed*/
@@ -167,10 +167,10 @@ public class AddCostOrIncomeFrame extends JFrame {
                         date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
 
                         //Take from the user the category of the CostOrIncome item.
-                        Category category = new Category(chosenCategory.getSelectedItem().toString());
+                        Category category = new Category(cbChosenCategory.getSelectedItem().toString());
 
                         //Take from the user the currency of the cost and converts it to shekels(ILS).
-                        String currency = chosenCurrency.getSelectedItem().toString();
+                        String currency = cbChosenCurrency.getSelectedItem().toString();
                         switch (currency) {
                             case "EUR":
                                 EUR.setExchangeRate(3.9355);
@@ -198,7 +198,7 @@ public class AddCostOrIncomeFrame extends JFrame {
         });
 
         //This button return the user to the StartFrame.
-        homePage.addActionListener(new ActionListener() {
+        btHomePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 StartFrame startFrame = new StartFrame(vm);
