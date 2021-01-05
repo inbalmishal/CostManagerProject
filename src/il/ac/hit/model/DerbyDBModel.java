@@ -20,7 +20,7 @@ public class DerbyDBModel implements IModel {
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
-            throw new CostManagerException("problem with the connection to the db driver");
+            throw new CostManagerException("Problem with the connection to the db driver");
         }
     }
 
@@ -32,9 +32,6 @@ public class DerbyDBModel implements IModel {
     public void addCostOrIncome(CostOrIncome item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
-        ResultSet rs = null;
-        if (item.getDescription().length() == 0)
-            throw new CostManagerException("item description must have at least one letter");
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
@@ -44,23 +41,18 @@ public class DerbyDBModel implements IModel {
             //Insert cost or income to the DB.
             statement.execute("insert into InOutCome(id, description, cost, date, category) values (" + item.getId() + ", '" +
                     item.getDescription() + "', " + item.getCost() + ", '" + item.getDate() + "', '" + item.getCategory().getCategoryName() + "')");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
-            }
-            if (rs != null) try {
-                rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -70,7 +62,7 @@ public class DerbyDBModel implements IModel {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        int max = 0;
+        int max;
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
@@ -109,11 +101,9 @@ public class DerbyDBModel implements IModel {
     public synchronized void deleteCostOrIncome(int id) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
-        ResultSet rs = null;
         //Check if the id exist.
         if (!checkIfIdExists(id)) {
-            CostManagerException e = new CostManagerException("This id not exists");
-            throw e;
+            throw new CostManagerException("This id not exists");
         }
         try {
             //Connect to the DB.
@@ -122,23 +112,18 @@ public class DerbyDBModel implements IModel {
             String sql = "delete from InOutCome where id = " + id;
             //Delete cost or income from the DB.
             statement.execute(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
-            }
-            if (rs != null) try {
-                rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -155,27 +140,24 @@ public class DerbyDBModel implements IModel {
             String sql = "SELECT * FROM InOutCome WHERE id = " + id;
             //Search if this id exist in the table InOutCome in the DB.
             rs = statement.executeQuery(sql);
-            if (rs.next())
-                return true;
-            else
-                return false;
-        } catch (Exception e) {
+            return rs.next();
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (rs != null) try {
                 rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -190,14 +172,10 @@ public class DerbyDBModel implements IModel {
     public void addNewCategory(Category item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
-        ResultSet rs = null;
         //Check if the category already exist.
         if (checkIfCategoryExists(item.getCategoryName())) {
-            CostManagerException e = new CostManagerException("This category already exists");
-            throw e;
+            throw new CostManagerException("This category already exists");
         }
-        if (item.getCategoryName().length() == 0)
-            throw new CostManagerException("category must have at least one letter");
         try {
             //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
@@ -205,23 +183,18 @@ public class DerbyDBModel implements IModel {
             String sql = "insert into category values ('" + item.getCategoryName() + "')";
             //Insert new category to the table category in the DB.
             statement.execute(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
-            }
-            if (rs != null) try {
-                rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -238,27 +211,24 @@ public class DerbyDBModel implements IModel {
             String sql = "SELECT * FROM category WHERE name = '" + categoryName + "'";
             //Search if this category name exist in the table category in the DB.
             rs = statement.executeQuery(sql);
-            if (rs.next())
-                return true;
-            else
-                return false;
-        } catch (Exception e) {
+            return rs.next();
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (rs != null) try {
                 rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -271,13 +241,9 @@ public class DerbyDBModel implements IModel {
     public void deleteCategory(Category item) throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
-        ResultSet rs = null;
-        if (item.getCategoryName().length() == 0)
-            throw new CostManagerException("category must have at least one letter");
         //Check if the category doesn't exist.
         if (!checkIfCategoryExists(item.getCategoryName())) {
-            CostManagerException e = new CostManagerException("This category doesn't exist");
-            throw e;
+            throw new CostManagerException("This category doesn't exist");
         }
         try {
             //Connect to the DB.
@@ -286,23 +252,18 @@ public class DerbyDBModel implements IModel {
             String sql = "delete from category where name = '" + item.getCategoryName() + "'";
             //Delete category from the table category in the DB.
             statement.execute(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
-            }
-            if (rs != null) try {
-                rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -314,14 +275,12 @@ public class DerbyDBModel implements IModel {
     @Override
     public synchronized ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
-            CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
-            throw e;
+            throw new CostManagerException("The date 'from' come after the date 'to'");
         }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomesBetweenDates(from, to);
         ArrayList<CostOrIncome> result = new ArrayList<>();
         //Insert to array result every cost from the items array.
-        for (int i = 0; i < items.size(); i++) {
-            CostOrIncome item = items.get(i);
+        for (CostOrIncome item : items) {
             if (item.getCost() < 0) {
                 result.add(item);
             }
@@ -335,14 +294,12 @@ public class DerbyDBModel implements IModel {
     @Override
     public synchronized ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
-            CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
-            throw e;
+            throw new CostManagerException("The date 'from' come after the date 'to'");
         }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomesBetweenDates(from, to);
         ArrayList<CostOrIncome> result = new ArrayList<>();
         //Insert to array result every income from the items array.
-        for (int i = 0; i < items.size(); i++) {
-            CostOrIncome item = items.get(i);
+        for (CostOrIncome item : items) {
             if (item.getCost() >= 0) {
                 result.add(item);
             }
@@ -356,14 +313,12 @@ public class DerbyDBModel implements IModel {
     @Override
     public synchronized ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
-            CostManagerException e = new CostManagerException("The date 'from' come after the date 'to'");
-            throw e;
+            throw new CostManagerException("The date 'from' come after the date 'to'");
         }
         ArrayList<CostOrIncome> items = getAllCostsAndIncomes();
         ArrayList<CostOrIncome> result = new ArrayList<>();
         //Check every item in items array if the date between from and to, if yes put inside the result array.
-        for (int i = 0; i < items.size(); i++) {
-            CostOrIncome item = items.get(i);
+        for (CostOrIncome item : items) {
             if (item.getDate().compareTo(from) >= 0 && item.getDate().compareTo(to) <= 0) {
                 result.add(item);
             }
@@ -392,23 +347,23 @@ public class DerbyDBModel implements IModel {
             while (rs.next()) {
                 balance += rs.getDouble("cost");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (rs != null) try {
                 rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -423,7 +378,7 @@ public class DerbyDBModel implements IModel {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        ArrayList<CostOrIncome> items = null;
+        ArrayList<CostOrIncome> items;
 
         try {
             //Connect to the DB.
@@ -440,23 +395,23 @@ public class DerbyDBModel implements IModel {
                 items.add(item);
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (rs != null) try {
                 rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -471,7 +426,7 @@ public class DerbyDBModel implements IModel {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        ArrayList<Category> categories = null;
+        ArrayList<Category> categories;
 
         try {
             //Connect to the DB.
@@ -486,23 +441,23 @@ public class DerbyDBModel implements IModel {
                 categories.add(category);
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new CostManagerException(e.getMessage());
         } finally {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (rs != null) try {
                 rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }
@@ -516,7 +471,6 @@ public class DerbyDBModel implements IModel {
     public void createDB() throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
-        ResultSet rs = null;
         try {
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
@@ -539,17 +493,12 @@ public class DerbyDBModel implements IModel {
             //Disconnect from the DB.
             if (statement != null) try {
                 statement.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
             if (connection != null) try {
                 connection.close();
-            } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
-            }
-            if (rs != null) try {
-                rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new CostManagerException(e.getMessage());
             }
         }

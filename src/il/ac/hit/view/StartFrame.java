@@ -36,7 +36,7 @@ public class StartFrame {
         panelWest = new JPanel();
         panelCenter = new JPanel();
         balance = vm.getTheBalance();
-        lbShowBalance = new JLabel("Hey user,\n your balance is :" + new DecimalFormat("##.##").format(balance));
+        lbShowBalance = new JLabel("Hey user,\n your balance is :   " + new DecimalFormat("##.##").format(balance));
         lbIcon = new JLabel(new ImageIcon("Image.png"));
         lbTitle = new JLabel("Cost Manager");
         lbTitle.setFont(new Font("serif",Font.PLAIN,40));

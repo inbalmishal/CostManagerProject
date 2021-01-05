@@ -125,8 +125,13 @@ public class AddOrDeleteCategoryFrame extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 //get the category from the user, create the category object and delete it from the DB
                 String s = tfCategory.getText();
-                Category category = new Category(s);
-                vm.deleteCategory(category);
+                if (s.length() != 0){
+                    Category category = new Category(s);
+                    vm.deleteCategory(category);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Category must have at least one letter", "Error!", HEIGHT);
+                }
             }
         });
 
@@ -136,8 +141,13 @@ public class AddOrDeleteCategoryFrame extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 //get the category from the user, create the category object and add it to the DB
                 String s = tfCategory.getText();
-                Category category = new Category(s);
-                vm.addNewCategory(category);
+                if (s.length() != 0){
+                    Category category = new Category(s);
+                    vm.addNewCategory(category);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Category must have at least one letter", "Error!", HEIGHT);
+                }
             }
         });
 

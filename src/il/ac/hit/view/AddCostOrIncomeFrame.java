@@ -1,6 +1,7 @@
 package il.ac.hit.view;
 
 import il.ac.hit.model.Category;
+import il.ac.hit.model.CostManagerException;
 import il.ac.hit.model.CostOrIncome;
 import il.ac.hit.viewModel.IViewModel;
 
@@ -178,54 +179,60 @@ public class AddCostOrIncomeFrame extends JFrame {
                 if it's not number a message will be displayed*/
                 double cost = 0;
                 try {
-                    cost = Double.parseDouble(tfCost.getText());
+                    if (desc.length() == 0)
+                        throw new CostManagerException("item description must have at least one letter");
+
+                    try {
+                        cost = Double.parseDouble(tfCost.getText());
 
                     /*Take from the user the date.
                     if no date inserted a message will be displayed*/
-                    Date date = null;
-                    try {
-                        date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.getDatePicker().getJFormattedTextField().getText());
+                        Date date = null;
+                        try {
+                            date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.getDatePicker().getJFormattedTextField().getText());
 
-                        //Take from the user the category of the CostOrIncome item.
-                        Category category = new Category(cbChosenCategory.getSelectedItem().toString());
+                            //Take from the user the category of the CostOrIncome item.
+                            Category category = new Category(cbChosenCategory.getSelectedItem().toString());
 
-                        //Take from the user the currency of the cost and converts it to shekels(ILS).
-                        String currency = cbChosenCurrency.getSelectedItem().toString();
-                        switch (currency) {
-                            case "EUR":
-                                EUR.setExchangeRate(3.9355);
-                                cost = EUR.convertToShekels(cost);
-                                break;
-                            case "USD":
-                                USD.setExchangeRate(3.2224);
-                                cost = USD.convertToShekels(cost);
-                                break;
-                        }
-                        boolean checkedIncomes,checkedExpenses;
-                        checkedIncomes = cbIncomes.isSelected();
-                        checkedExpenses = cbExpenses.isSelected();
+                            //Take from the user the currency of the cost and converts it to shekels(ILS).
+                            String currency = cbChosenCurrency.getSelectedItem().toString();
+                            switch (currency) {
+                                case "EUR":
+                                    EUR.setExchangeRate(3.9355);
+                                    cost = EUR.convertToShekels(cost);
+                                    break;
+                                case "USD":
+                                    USD.setExchangeRate(3.2224);
+                                    cost = USD.convertToShekels(cost);
+                                    break;
+                            }
+                            boolean checkedIncomes, checkedExpenses;
+                            checkedIncomes = cbIncomes.isSelected();
+                            checkedExpenses = cbExpenses.isSelected();
 
-                        //create the item according to the details of the user and add the item to the db.
-                        if((checkedExpenses && checkedIncomes) || (!checkedExpenses && !checkedIncomes)){
-                            JOptionPane.showMessageDialog(null, "Choose whether it is an expense or an income !", "Error!", HEIGHT);
-                        }
-                        else if(checkedExpenses){
-                            CostOrIncome costOrIncome = new CostOrIncome(desc, -cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
-                            vm.addCostOrIncome(costOrIncome);
-                        }
-                        else{
-                            CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
-                            vm.addCostOrIncome(costOrIncome);
-                        }
+                            //create the item according to the details of the user and add the item to the db.
+                            if ((checkedExpenses && checkedIncomes) || (!checkedExpenses && !checkedIncomes)) {
+                                JOptionPane.showMessageDialog(null, "Choose whether it is an expense or an income !", "Error!", HEIGHT);
+                            } else if (checkedExpenses) {
+                                CostOrIncome costOrIncome = new CostOrIncome(desc, -cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+                                vm.addCostOrIncome(costOrIncome);
+                            } else {
+                                CostOrIncome costOrIncome = new CostOrIncome(desc, cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
+                                vm.addCostOrIncome(costOrIncome);
+                            }
 
-                    } catch (ParseException e) {
-                        //If the user don't give us a date.
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", HEIGHT);
+                        } catch (ParseException e) {
+                            //If the user don't give us a date.
+                            JOptionPane.showMessageDialog(null, "You need to put a date", "Error!", HEIGHT);
+                        }
+                    } catch (NumberFormatException e) {
+                        //If the user don't give us a number in the cost.
+                        JOptionPane.showMessageDialog(null, "The cost must be a number", "Error!", HEIGHT);
                     }
-                } catch (NumberFormatException e) {
-                    //If the user don't give us a number in the cost.
-                    JOptionPane.showMessageDialog(null, "the cost must be a double", "Error!", HEIGHT);
+                } catch (CostManagerException e) {
+                    JOptionPane.showMessageDialog(null, "You need write description", "Error!", HEIGHT);
                 }
+
             }
         });
 
