@@ -10,8 +10,8 @@ public class CreateDBModel {
         // createTableInOutCome();
         // setAndCheckInOutCome();
         //setAndCheckCategory();
-       // close("Category");
-       // close("InOutCome");
+       //close("Category");
+       //close("InOutCome");
         // checkCategory();
         //checkInOutCome();
     }

@@ -4,10 +4,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This is the class for all model method.
+ * @author Inbal mishal and Tal levi.
+ */
 public class DerbyDBModel implements IModel {
-    public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-    public static final String JDBC_URL = "jdbc:derby:CostDB;create=true";
+    private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+    private static final String JDBC_URL = "jdbc:derby:CostDB;create=true";
 
+    /**
+     * Create the connection to the DB.
+     * @throws CostManagerException
+     */
     public DerbyDBModel() throws CostManagerException {
         try {
             Class.forName(DRIVER);
@@ -17,6 +25,9 @@ public class DerbyDBModel implements IModel {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addCostOrIncome(CostOrIncome item) throws CostManagerException {
         Connection connection = null;
@@ -91,6 +102,9 @@ public class DerbyDBModel implements IModel {
         return max;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void deleteCostOrIncome(int id) throws CostManagerException {
         Connection connection = null;
@@ -167,6 +181,10 @@ public class DerbyDBModel implements IModel {
         }
 
     }
+
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     public void addNewCategory(Category item) throws CostManagerException {
@@ -246,6 +264,9 @@ public class DerbyDBModel implements IModel {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteCategory(Category item) throws CostManagerException {
         Connection connection = null;
@@ -287,6 +308,9 @@ public class DerbyDBModel implements IModel {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
@@ -305,6 +329,9 @@ public class DerbyDBModel implements IModel {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
@@ -323,6 +350,9 @@ public class DerbyDBModel implements IModel {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException {
         if (from.after(to)) {
@@ -341,6 +371,9 @@ public class DerbyDBModel implements IModel {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTheBalance() throws CostManagerException {
         Connection connection = null;
@@ -382,6 +415,9 @@ public class DerbyDBModel implements IModel {
         return balance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized ArrayList<CostOrIncome> getAllCostsAndIncomes() throws CostManagerException {
         Connection connection = null;
@@ -427,6 +463,9 @@ public class DerbyDBModel implements IModel {
         return items;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<Category> getAllCategories() throws CostManagerException {
         Connection connection = null;
@@ -470,6 +509,9 @@ public class DerbyDBModel implements IModel {
         return categories;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createDB() throws CostManagerException {
         Connection connection = null;
