@@ -10,6 +10,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 
+/**
+ * This is the first screen when the user open the app.
+ * @author Inbal mishal and Tal levi
+ */
 public class StartFrame {
     private IViewModel vm;
     private JFrame frame;
