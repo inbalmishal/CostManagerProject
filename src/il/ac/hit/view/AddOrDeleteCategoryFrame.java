@@ -11,6 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * This is the frame of adding or deleting category.
+ * @author Inbal mishal and Tal levi
+ */
 public class AddOrDeleteCategoryFrame extends JFrame {
     private IViewModel vm;
     private JFrame frame;
@@ -29,7 +33,10 @@ public class AddOrDeleteCategoryFrame extends JFrame {
     private JLabel lbIcon;
     private JScrollPane jsp;
 
-    //Create all the components in this frame.
+    /**
+     * Create all the components in this frame.
+     * @param vm Represent the viewModel that connected to the model.
+     */
     AddOrDeleteCategoryFrame(IViewModel vm){
         setVm(vm);
         frame = new JFrame("Add/Delete Category");
@@ -60,11 +67,17 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         jsp = new JScrollPane();
     }
 
+    /**
+     * Set the viewModel parameter.
+     * @param vm Represent the view model that connected to the model.
+     */
     public void setVm(IViewModel vm) {
         this.vm = vm;
     }
 
-    //Organize all the components in this frame.
+    /**
+     * Organize all the components in this frame and create events listeners to the buttons.
+     */
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,650);

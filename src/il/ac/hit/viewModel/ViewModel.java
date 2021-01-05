@@ -7,35 +7,57 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.*;
 
+/**
+ * This Class included all of the methods that connect between the model and the view.
+ * @author Inbal mishal and Tal levi
+ */
 public class ViewModel implements IViewModel {
     private IModel model;
     private IView view;
     private ExecutorService pool;
 
+    /**
+     * Create pool of threads.
+     */
     public ViewModel() {
         pool = Executors.newFixedThreadPool(10);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setView(IView view) {
         this.view = view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setModel(IModel model) {
         this.model = model;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showGoodMessage(String text) {
         view.showGoodMessage(text);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showBadMessage(String text) {
         view.showBadMessage(text);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addCostOrIncome(CostOrIncome item){
         pool.submit(new Runnable() {
@@ -53,6 +75,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteCostOrIncome(int id) {
         pool.submit(new Runnable() {
@@ -69,6 +94,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addNewCategory(Category item){
         pool.submit(new Runnable() {
@@ -84,6 +112,9 @@ public class ViewModel implements IViewModel {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteCategory(Category category) {
         pool.submit(new Runnable() {
@@ -100,6 +131,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to) {
         final ArrayList<CostOrIncome>[] item = new ArrayList[1];
@@ -124,6 +158,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from, Date to)  {
         final ArrayList<CostOrIncome>[] item = new ArrayList[1];
@@ -148,6 +185,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to)  {
         final ArrayList<CostOrIncome>[] item = new ArrayList[1];
@@ -172,6 +212,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double getTheBalance()  {
         final double[] balance = new double[1];
@@ -196,6 +239,9 @@ public class ViewModel implements IViewModel {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<CostOrIncome> getAllCostsAndIncomes(){
     final ArrayList<CostOrIncome>[] item = new ArrayList[1];
@@ -219,6 +265,9 @@ public class ViewModel implements IViewModel {
         return item[0];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<Category> getAllCategories() {
         final ArrayList<Category>[] categories = new ArrayList[1];

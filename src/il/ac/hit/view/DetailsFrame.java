@@ -25,6 +25,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This is the frame of the details about the incomes, costs And their division by dates.
+ * @author Inbal mishal and Tal levi
+ */
 public class DetailsFrame extends JFrame {
     private IViewModel vm;
     private JFrame frame;
@@ -42,7 +46,10 @@ public class DetailsFrame extends JFrame {
     private ChartPanel chartPanel;
     private ImageIcon okIcon;
 
-    //Create all the components in this frame.
+    /**
+     * Create all the components in this frame.
+     * @param vm Represent the view model that connected to the model.
+     */
     DetailsFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
@@ -79,8 +86,8 @@ public class DetailsFrame extends JFrame {
             Date date = myArray.get(j).getDate();
             Category category = myArray.get(j).getCategory();
             for(int k = 0;k<categoryArray.size();k++){
-                if(category.getCategoryName().equals(dataPie[k].getName())){
-                    dataPie[k].setCount(dataPie[k].getCount()+cost);
+                if(category.getCategoryName().equals(dataPie[k].getCategoryName())){
+                    dataPie[k].setMoneySum(dataPie[k].getMoneySum()+cost);
                 }
             }
             data[0] = id;
@@ -93,7 +100,7 @@ public class DetailsFrame extends JFrame {
         }
 
         for(int m=0;m<dataPie.length;m++){
-            pieDataSet.setValue(dataPie[m].getName(),dataPie[m].getCount());
+            pieDataSet.setValue(dataPie[m].getCategoryName(),dataPie[m].getMoneySum());
         }
         chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);
 
@@ -103,11 +110,18 @@ public class DetailsFrame extends JFrame {
         jsp.setBounds(215, 71, 615, 237);
     }
 
+    /**
+     * Set the viewModel parameter.
+     * @param vm Represent the view model that connected to the model.
+     */
     public void setVm(IViewModel vm) {
         this.vm = vm;
     }
 
-    //Organize all the components in this frame.
+
+    /**
+     * Organize all the components in this frame and create events listeners to the buttons.
+     */
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -147,8 +161,8 @@ public class DetailsFrame extends JFrame {
                 Date dateTo = null;
                 try {
                     //Take dates from the user.
-                    dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.datePicker.getJFormattedTextField().getText());
-                    dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.datePicker.getJFormattedTextField().getText());
+                    dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.getDatePicker().getJFormattedTextField().getText());
+                    dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.getDatePicker().getJFormattedTextField().getText());
                 } catch (ParseException e) {
                     //Put 1 in n if the user don't put dates.
                     n = 1;
@@ -206,8 +220,8 @@ public class DetailsFrame extends JFrame {
                 Date dateTo = null;
                 try {
                     //Take dates from the user.
-                    dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.datePicker.getJFormattedTextField().getText());
-                    dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.datePicker.getJFormattedTextField().getText());
+                    dateFrom = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerFrom.getDatePicker().getJFormattedTextField().getText());
+                    dateTo = new SimpleDateFormat("dd-MM-yyyy").parse(datePickerTo.getDatePicker().getJFormattedTextField().getText());
                 } catch (ParseException e) {
                     JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
                 }
@@ -275,8 +289,8 @@ public class DetailsFrame extends JFrame {
             Category category = myArray.get(i).getCategory();
             //Count all the expenses/incomes we get by categories, n give us information on what the user wants to view.
             for(int k = 0;k<categoryArray.size();k++){
-                if(category.getCategoryName().equals(dataPie[k].getName())){
-                    dataPie[k].setCount(dataPie[k].getCount()+(cost*n));
+                if(category.getCategoryName().equals(dataPie[k].getCategoryName())){
+                    dataPie[k].setMoneySum(dataPie[k].getMoneySum()+(cost*n));
                 }
             }
             data[0] = id;
@@ -289,7 +303,7 @@ public class DetailsFrame extends JFrame {
         }
         //Upload the details to the pie diagram.
         for(int m=0;m<dataPie.length;m++){
-            pieDataSet.setValue(dataPie[m].getName(),dataPie[m].getCount());
+            pieDataSet.setValue(dataPie[m].getCategoryName(),dataPie[m].getMoneySum());
         }
         //Refresh the frame with the new details inside table and pie chart.
         chart = ChartFactory.createPieChart3D("Pie Chart",pieDataSet);

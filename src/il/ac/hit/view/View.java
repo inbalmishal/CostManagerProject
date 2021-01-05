@@ -6,14 +6,24 @@ import javax.swing.*;
 
 import static java.awt.image.ImageObserver.HEIGHT;
 
+/**
+ * Represent the user interface of the application.
+ * @author Inbal mishal and Tal levi
+ */
 public class View implements IView {
     private IViewModel vm;
     private ImageIcon okIcon;
 
+    /**
+     * Create the view object and it's components.
+     */
     public View() {
         okIcon = new ImageIcon("ok.png");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         Runnable runnable = new Runnable() {
@@ -28,11 +38,17 @@ public class View implements IView {
         SwingUtilities.invokeLater(runnable);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setViewModel(IViewModel vm) {
         this.vm = vm;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showGoodMessage(String text) {
         if(SwingUtilities.isEventDispatchThread()){
@@ -47,6 +63,9 @@ public class View implements IView {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showBadMessage(String text) {
         if(SwingUtilities.isEventDispatchThread()){

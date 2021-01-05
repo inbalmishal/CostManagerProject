@@ -1,27 +1,50 @@
 package il.ac.hit.view;
 
-//Stores the pie chart data.
+/**
+ * Stores the pie chart data according to the category name.
+ *  @author Inbal mishal and Tal levi
+ */
 public class DataForPie {
-    private String name;
-    private double count = 0;
+    private String categoryName;
+    private double moneySum = 0;
 
-    public DataForPie(String name) {
-        setName(name);
+    /**
+     * Create DataForPie object.
+     * @param categoryName Represent the name of the category that stored.
+     */
+    public DataForPie(String categoryName) {
+        setCategoryName(categoryName);
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Get the name of the category that stored.
+     * @return the name of the category that stored.
+     */
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Set the name of the category that stored.
+     * @param categoryName Represent the name of the category that stored
+     */
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public double getCount() {
-        return count;
+    /**
+     * Get the count parameter.
+     * @return
+     */
+    public double getMoneySum() {
+        return moneySum;
     }
 
-    public void setCount(double count) {
-        this.count = count;
+    /**
+     * Set the count parameter.
+     * @param moneySum Represent the sum of the money that saved or wasted in this category.
+     */
+    public void setMoneySum(double moneySum) {
+        this.moneySum = moneySum;
     }
 }
