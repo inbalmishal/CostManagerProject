@@ -15,92 +15,92 @@ import java.util.Date;
 public interface IViewModel {
 
     /**
-     *
+     * Set the view parameter.
      * @param view
      */
     public void setView(IView view);
 
     /**
-     *
+     *Set the model parameter.
      * @param model
      */
     public void setModel(IModel model);
 
     /**
-     *
-     * @param text
+     * Calls to a view method that show to the user a message if the action succeeded.
+     * @param text Represent the exception message.
      */
     public void showGoodMessage(String text);
 
     /**
-     *
-     * @param text
+     * Calls to a view method that show to the user a message if the action failed.
+     * @param text Represent the exception message.
      */
     public void showBadMessage(String text);
 
     /**
-     *
-     * @param item
+     * This method takes CostOrIncome type parameter and calls to a model method that adds it to the DB.
+     * @param item CostOrIncome type parameter.
      */
     public void addCostOrIncome(CostOrIncome item);
 
     /**
-     *
-     * @param id
+     *This method take id of CostOrIncome type parameter and calls to a model method that deletes it from the DB.
+     * @param id The id of CostOrIncome type parameter.
      */
     public void deleteCostOrIncome(int id);
 
     /**
-     *
-     * @param item
+     *This method take Category type parameter and calls to a model method that adds it to the DB.
+     * @param item Category type parameter.
      */
     public void addNewCategory(Category item);
 
     /**
-     *
-     * @param item
+     *This method take Category type parameter and calls to a model method that deletes it from the DB.
+     * @param item Category type parameter.
      */
     public void deleteCategory(Category item );
 
     /**
-     *
-     * @param from
-     * @param to
-     * @return
+     * This method take date from and date to and calls to a model method that get from the DB all the costs between the dates.
+     * @param from The first date we want to see.
+     * @param to The last date we want to see.
+     * @return Array list with all costs between the dates.
      */
     public ArrayList<CostOrIncome> getAllCostsBetweenDates(Date from, Date to);
 
     /**
-     *
-     * @param from
-     * @param to
-     * @return
+     * This method take date from and date to and calls to a model method that get from the DB all the incomes between the dates.
+     * @param from The first date we want to see.
+     * @param to The last date we want to see.
+     * @return Array list with all Incomes between the dates.
      */
     public ArrayList<CostOrIncome> getAllIncomesBetweenDates(Date from,Date to);
 
     /**
-     *
-     * @param from
-     * @param to
-     * @return
+     *This method take date "from" and date "to" and calls to a model method that get from the DB all the costs and incomes between the dates.
+     * @param from The first date we want to see.
+     * @param to The last date we want to see.
+     * @return Array list with all costs and incomes between the dates.
      */
     public ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from,Date to);
 
     /**
-     *
-     * @return
+     * This method calls to a model method that calculate the balance in my DB.
+     * @return The balance in my DB.
      */
     public double getTheBalance();
 
     /**
-     *
-     * @return
+     *This method calls to a model method that get from the DB all the costs and incomes.
+     * @return Array list with all costs and incomes.
      */
     public ArrayList<CostOrIncome> getAllCostsAndIncomes();
 
     /**
-     *
-     * @return
+     *This method calls to a model method that get from the DB all the categories.
+     * @return Array list with all categories in my DB.
      */
     public ArrayList<Category> getAllCategories();
 }
