@@ -18,6 +18,10 @@ import java.util.Date;
 
 import static il.ac.hit.view.Currency.*;
 
+/**
+ * This is the frame of adding income or cost.
+ * @author Inbal mishal and Tal levi
+ */
 public class AddCostOrIncomeFrame extends JFrame {
     private IViewModel vm;
     private JFrame frame;
@@ -46,7 +50,11 @@ public class AddCostOrIncomeFrame extends JFrame {
     private JCheckBox cbIncomes;
     private ImageIcon imageIconOk;
 
-    //Create all the components in this frame.
+
+    /**
+     * Create all the components in this frame.
+     * @param vm Represent the viewModel that connected to the model.
+     */
     AddCostOrIncomeFrame(IViewModel vm) {
         setVm(vm);
         panelNorth = new JPanel();
@@ -80,12 +88,16 @@ public class AddCostOrIncomeFrame extends JFrame {
         currencyPanel= new JPanel();
     }
 
+    /**
+     * Set the viewModel parameter.
+     * @param vm Represent the view model that connected to the model.
+     */
     public void setVm(IViewModel vm) {
         this.vm = vm;
     }
 
     //the function that charges the categories from the db to the category JComboBox
-    public JComboBox createChosenCategory() {
+    private JComboBox createChosenCategory() {
         JComboBox categoriesJCombox = null;
         ArrayList<Category> categories = vm.getAllCategories();
         String[] categoriesNames = new String[categories.size()];
@@ -96,14 +108,16 @@ public class AddCostOrIncomeFrame extends JFrame {
         return categoriesJCombox;
     }
     //the function that fill the currency JComboBox
-    public JComboBox createChosenCurrency(){
+    private JComboBox createChosenCurrency(){
         JComboBox currenciesJCombox = null;
         String[] Currencies = {"ILS","USD","EUR"};
         currenciesJCombox = new JComboBox(Currencies);
         return currenciesJCombox;
     }
 
-    //Organize all the components in this frame.
+    /**
+     * Organize all the components in this frame and create events listeners to the buttons.
+     */
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
@@ -170,7 +184,7 @@ public class AddCostOrIncomeFrame extends JFrame {
                     if no date inserted a message will be displayed*/
                     Date date = null;
                     try {
-                        date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.datePicker.getJFormattedTextField().getText());
+                        date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.getDatePicker().getJFormattedTextField().getText());
 
                         //Take from the user the category of the CostOrIncome item.
                         Category category = new Category(cbChosenCategory.getSelectedItem().toString());

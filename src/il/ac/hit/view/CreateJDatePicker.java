@@ -10,10 +10,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
-//creating the component of put date.
+/**
+ * This class create the component of putting a date.
+ * @author Inbal mishal and Tal levi
+ */
 public class CreateJDatePicker {
-    public JDatePickerImpl datePicker;
+    private JDatePickerImpl datePicker;
 
+    /**
+     * Create the component of putting a date.
+     * @param jPanel Represent the panel which on it the date will be.
+     */
     CreateJDatePicker(JPanel jPanel){
         SqlDateModel model = new SqlDateModel();
         Properties p = new Properties();
@@ -23,12 +30,12 @@ public class CreateJDatePicker {
         JDatePanelImpl panel = new JDatePanelImpl(model,p);
         datePicker = new JDatePickerImpl(panel, new JFormattedTextField.AbstractFormatter() {
             @Override
-            public Object stringToValue(String s) throws ParseException {
+            public Object stringToValue(String s) {
                 return null;
             }
 
             @Override
-            public String valueToString(Object o) throws ParseException {
+            public String valueToString(Object o){
                 if(o != null)
                 {
                     Calendar cal = (Calendar) o;
@@ -40,5 +47,21 @@ public class CreateJDatePicker {
             }
         });
         jPanel.add(datePicker);
+    }
+
+    /**
+     * Get the datePicker object.
+     * @return the datePicker object
+     */
+    public JDatePickerImpl getDatePicker() {
+        return datePicker;
+    }
+
+    /**
+     * Set the datePicker object.
+     * @param datePicker Represent the datePicker object.
+     */
+    public void setDatePicker(JDatePickerImpl datePicker) {
+        this.datePicker = datePicker;
     }
 }

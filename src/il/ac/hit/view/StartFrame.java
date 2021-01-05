@@ -22,7 +22,10 @@ public class StartFrame {
     private JLabel lbIcon, lbShowBalance, lbTitle;
     private double balance;
 
-    //Create all the components in this frame.
+    /**
+     * Create all the components in this frame.
+     * @param vm Represent the viewModel that connected to the model.
+     */
     public StartFrame(IViewModel vm) {
         setVm(vm);
         frame = new JFrame("Cost Manager");
@@ -40,11 +43,17 @@ public class StartFrame {
         lbShowBalance.setFont(new Font("serif",Font.PLAIN,40));
     }
 
+    /**
+     * Set the viewModel parameter.
+     * @param vm Represent the view model that connected to the model.
+     */
     public void setVm(IViewModel vm) {
         this.vm = vm;
     }
 
-    //Organize all the components in this frame.
+    /**
+     * Organize all the components in this frame and create events listeners to the buttons.
+     */
     public void start(){
         frame.setLayout(new BorderLayout());
         frame.setSize(1000,600);
