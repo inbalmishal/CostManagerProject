@@ -14,7 +14,7 @@ public class DerbyDBModel implements IModel {
 
     /**
      * Create the connection to the DB.
-     * @throws CostManagerException
+     * @throws CostManagerException Problem with the connection to the db driver.
      */
     public DerbyDBModel() throws CostManagerException {
         try {
