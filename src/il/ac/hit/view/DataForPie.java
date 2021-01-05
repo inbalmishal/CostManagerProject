@@ -33,15 +33,15 @@ public class DataForPie {
     }
 
     /**
-     * Get the count parameter.
-     * @return
+     * Get the moneySum parameter.
+     * @return the sum of the money that saved or wasted in this category.
      */
     public double getMoneySum() {
         return moneySum;
     }
 
     /**
-     * Set the count parameter.
+     * Set the moneySum parameter.
      * @param moneySum Represent the sum of the money that saved or wasted in this category.
      */
     public void setMoneySum(double moneySum) {

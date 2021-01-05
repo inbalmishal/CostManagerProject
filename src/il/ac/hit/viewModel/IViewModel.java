@@ -16,13 +16,13 @@ public interface IViewModel {
 
     /**
      * Set the view parameter.
-     * @param view
+     * @param view view type parameter.
      */
     public void setView(IView view);
 
     /**
      *Set the model parameter.
-     * @param model
+     * @param model Model type parameter.
      */
     public void setModel(IModel model);
 
