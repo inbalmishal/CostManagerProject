@@ -5,7 +5,6 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
 import javax.swing.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
@@ -40,8 +39,7 @@ public class CreateJDatePicker {
                 {
                     Calendar cal = (Calendar) o;
                     SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                    String strDate = format.format(cal.getTime());
-                    return strDate;
+                    return format.format(cal.getTime());
                 }
                 return " ";
             }

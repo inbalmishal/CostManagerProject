@@ -4,8 +4,6 @@ import il.ac.hit.viewModel.IViewModel;
 
 import javax.swing.*;
 
-import static java.awt.image.ImageObserver.HEIGHT;
-
 /**
  * Represent the user interface of the application.
  * @author Inbal mishal and Tal levi
@@ -52,12 +50,12 @@ public class View implements IView {
     @Override
     public void showGoodMessage(String text) {
         if(SwingUtilities.isEventDispatchThread()){
-            JOptionPane.showMessageDialog(null,text,"Success!",HEIGHT,okIcon);
+            JOptionPane.showMessageDialog(null,text,"Success!", JOptionPane.INFORMATION_MESSAGE,okIcon);
         }else {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    JOptionPane.showMessageDialog(null,text,"Success!",HEIGHT,okIcon);
+                    JOptionPane.showMessageDialog(null,text,"Success!", JOptionPane.INFORMATION_MESSAGE,okIcon);
                 }
             });
         }
@@ -69,12 +67,12 @@ public class View implements IView {
     @Override
     public void showBadMessage(String text) {
         if(SwingUtilities.isEventDispatchThread()){
-            JOptionPane.showMessageDialog(null,text,"Error!",HEIGHT);
+            JOptionPane.showMessageDialog(null,text,"Error!", JOptionPane.WARNING_MESSAGE);
         }else {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    JOptionPane.showMessageDialog(null,text,"Error!",HEIGHT);
+                    JOptionPane.showMessageDialog(null,text,"Error!", JOptionPane.WARNING_MESSAGE);
                 }
             });
         }

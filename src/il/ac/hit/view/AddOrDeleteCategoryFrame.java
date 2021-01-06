@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * This is the frame of adding or deleting category.
@@ -59,9 +60,9 @@ public class AddOrDeleteCategoryFrame extends JFrame {
         try {
             img = ImageIO.read(new File("categories.jpg"));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,e.getMessage(),"Error!",HEIGHT);
+            JOptionPane.showMessageDialog(null,e.getMessage(),"Error!", JOptionPane.WARNING_MESSAGE);
         }
-        Image dImg = img.getScaledInstance(450, 350, Image.SCALE_SMOOTH);
+        Image dImg = Objects.requireNonNull(img).getScaledInstance(450, 350, Image.SCALE_SMOOTH);
         lbIcon = new JLabel(new ImageIcon(dImg));
 
         jsp = new JScrollPane();
@@ -130,7 +131,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                     vm.deleteCategory(category);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Category must have at least one letter", "Error!", HEIGHT);
+                    JOptionPane.showMessageDialog(null, "Category must have at least one letter", "Error!", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -146,7 +147,7 @@ public class AddOrDeleteCategoryFrame extends JFrame {
                     vm.addNewCategory(category);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Category must have at least one letter", "Error!", HEIGHT);
+                    JOptionPane.showMessageDialog(null, "Category must have at least one letter", "Error!", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });

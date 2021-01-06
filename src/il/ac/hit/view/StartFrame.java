@@ -20,7 +20,6 @@ public class StartFrame {
     private JPanel panelNorth,panelWest,panelCenter;
     private JButton btShowMyExpenseIncome, btAddNewExpenseIncome, btAddOrDeleteNewCategory;
     private JLabel lbIcon, lbShowBalance, lbTitle;
-    private double balance;
 
     /**
      * Create all the components in this frame.
@@ -35,7 +34,7 @@ public class StartFrame {
         panelNorth = new JPanel();
         panelWest = new JPanel();
         panelCenter = new JPanel();
-        balance = vm.getTheBalance();
+        double balance = vm.getTheBalance();
         lbShowBalance = new JLabel("Hey user,\n your balance is :   " + new DecimalFormat("##.##").format(balance));
         lbIcon = new JLabel(new ImageIcon("Image.png"));
         lbTitle = new JLabel("Cost Manager");

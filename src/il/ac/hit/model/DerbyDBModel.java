@@ -381,8 +381,8 @@ public class DerbyDBModel implements IModel {
         ArrayList<CostOrIncome> items;
 
         try {
-            //Connect to the DB.
             items = new ArrayList<>();
+            //Connect to the DB.
             connection = DriverManager.getConnection(JDBC_URL);
             statement = connection.createStatement();
             //Get all details from cost and income table in the DB.
@@ -416,6 +416,114 @@ public class DerbyDBModel implements IModel {
             }
         }
         return items;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized ArrayList<CostOrIncome> getAllCosts() throws CostManagerException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        ArrayList<CostOrIncome> items,result;
+
+        try {
+            items = new ArrayList<>();
+            //Connect to the DB.
+            connection = DriverManager.getConnection(JDBC_URL);
+            statement = connection.createStatement();
+            //Get all details from cost and income table in the DB.
+            rs = statement.executeQuery("SELECT * FROM InOutCome");
+            //Put inside items array all the cost and income.
+            while (rs.next()) {
+                //int id, String description, double cost, Date date, Category category
+                Category category = new Category(rs.getString("category"));
+                CostOrIncome item = new CostOrIncome(rs.getInt("id"), rs.getString("description"), rs.getDouble("cost"), rs.getDate("date"), category);
+                items.add(item);
+            }
+
+        } catch (SQLException e) {
+            throw new CostManagerException(e.getMessage());
+        } finally {
+            //Disconnect from the DB.
+            if (statement != null) try {
+                statement.close();
+            } catch (SQLException e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new CostManagerException(e.getMessage());
+            }
+        }
+        result = new ArrayList<>();
+        //Insert to array result every cost from the items array.
+        for (CostOrIncome item : items) {
+            if (item.getCost() < 0) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized ArrayList<CostOrIncome> getAllIncomes() throws CostManagerException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        ArrayList<CostOrIncome> items,result;
+
+        try {
+            items = new ArrayList<>();
+            //Connect to the DB.
+            connection = DriverManager.getConnection(JDBC_URL);
+            statement = connection.createStatement();
+            //Get all details from cost and income table in the DB.
+            rs = statement.executeQuery("SELECT * FROM InOutCome");
+            //Put inside items array all the cost and income.
+            while (rs.next()) {
+                //int id, String description, double cost, Date date, Category category
+                Category category = new Category(rs.getString("category"));
+                CostOrIncome item = new CostOrIncome(rs.getInt("id"), rs.getString("description"), rs.getDouble("cost"), rs.getDate("date"), category);
+                items.add(item);
+            }
+
+        } catch (SQLException e) {
+            throw new CostManagerException(e.getMessage());
+        } finally {
+            //Disconnect from the DB.
+            if (statement != null) try {
+                statement.close();
+            } catch (SQLException e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (connection != null) try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new CostManagerException(e.getMessage());
+            }
+            if (rs != null) try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new CostManagerException(e.getMessage());
+            }
+        }
+        result = new ArrayList<>();
+        //Insert to array result every income from the items array.
+        for (CostOrIncome item : items) {
+            if (item.getCost() >= 0) {
+                result.add(item);
+            }
+        }
+        return result;
     }
 
     /**

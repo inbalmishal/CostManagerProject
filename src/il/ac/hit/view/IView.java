@@ -10,23 +10,23 @@ public interface IView {
     /**
      * Create the UI thread and the start frame.
      */
-    public void start();
+    void start();
 
     /**
      * Set the viewModel parameter.
      * @param vm Represent the view model that connected to the model.
      */
-    public void setViewModel(IViewModel vm);
+    void setViewModel(IViewModel vm);
 
     /**
      * Show to the user a message if the action succeeded.
      * @param text Represent the exception message.
      */
-    public void showGoodMessage(String text);
+    void showGoodMessage(String text);
 
     /**
      * Show to the user a message if the action failed.
      * @param text Represent the exception message.
      */
-    public void showBadMessage(String text);
+    void showBadMessage(String text);
 }

@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import static il.ac.hit.view.Currency.*;
 
@@ -49,7 +50,6 @@ public class AddCostOrIncomeFrame extends JFrame {
     private JComboBox cbChosenCurrency;
     private JCheckBox cbExpenses;
     private JCheckBox cbIncomes;
-    private ImageIcon imageIconOk;
 
 
     /**
@@ -61,7 +61,6 @@ public class AddCostOrIncomeFrame extends JFrame {
         panelNorth = new JPanel();
         panelCenter = new JPanel();
         panelSouth = new JPanel();
-        imageIconOk = new ImageIcon("ok.png");
         frame = new JFrame("Add New Category");
         lbTitle = new JLabel("Add Income Or Expense");
         lbDescription = new JLabel ("description:");
@@ -99,7 +98,7 @@ public class AddCostOrIncomeFrame extends JFrame {
 
     //the function that charges the categories from the db to the category JComboBox
     private JComboBox createChosenCategory() {
-        JComboBox categoriesJCombox = null;
+        JComboBox categoriesJCombox;
         ArrayList<Category> categories = vm.getAllCategories();
         String[] categoriesNames = new String[categories.size()];
         for(int i =0;i<categories.size();i++){
@@ -110,7 +109,7 @@ public class AddCostOrIncomeFrame extends JFrame {
     }
     //the function that fill the currency JComboBox
     private JComboBox createChosenCurrency(){
-        JComboBox currenciesJCombox = null;
+        JComboBox currenciesJCombox;
         String[] Currencies = {"ILS","USD","EUR"};
         currenciesJCombox = new JComboBox(Currencies);
         return currenciesJCombox;
@@ -177,7 +176,7 @@ public class AddCostOrIncomeFrame extends JFrame {
                 String desc = tfDescription.getText();
                 /*Take from the user the cost of the CostOrIncome item.
                 if it's not number a message will be displayed*/
-                double cost = 0;
+                double cost;
                 try {
                     if (desc.length() == 0)
                         throw new CostManagerException("item description must have at least one letter");
@@ -187,15 +186,15 @@ public class AddCostOrIncomeFrame extends JFrame {
 
                     /*Take from the user the date.
                     if no date inserted a message will be displayed*/
-                        Date date = null;
+                        Date date;
                         try {
                             date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.getDatePicker().getJFormattedTextField().getText());
 
                             //Take from the user the category of the CostOrIncome item.
-                            Category category = new Category(cbChosenCategory.getSelectedItem().toString());
+                            Category category = new Category(Objects.requireNonNull(cbChosenCategory.getSelectedItem()).toString());
 
                             //Take from the user the currency of the cost and converts it to shekels(ILS).
-                            String currency = cbChosenCurrency.getSelectedItem().toString();
+                            String currency = Objects.requireNonNull(cbChosenCurrency.getSelectedItem()).toString();
                             switch (currency) {
                                 case "EUR":
                                     EUR.setExchangeRate(3.9355);
@@ -212,7 +211,7 @@ public class AddCostOrIncomeFrame extends JFrame {
 
                             //create the item according to the details of the user and add the item to the db.
                             if ((checkedExpenses && checkedIncomes) || (!checkedExpenses && !checkedIncomes)) {
-                                JOptionPane.showMessageDialog(null, "Choose whether it is an expense or an income !", "Error!", HEIGHT);
+                                JOptionPane.showMessageDialog(null, "Choose whether it is an expense or an income !", "Error!", JOptionPane.WARNING_MESSAGE);
                             } else if (checkedExpenses) {
                                 CostOrIncome costOrIncome = new CostOrIncome(desc, -cost, new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), category);
                                 vm.addCostOrIncome(costOrIncome);
@@ -223,14 +222,14 @@ public class AddCostOrIncomeFrame extends JFrame {
 
                         } catch (ParseException e) {
                             //If the user don't give us a date.
-                            JOptionPane.showMessageDialog(null, "You need to put a date", "Error!", HEIGHT);
+                            JOptionPane.showMessageDialog(null, "You need to put a date", "Error!", JOptionPane.WARNING_MESSAGE);
                         }
                     } catch (NumberFormatException e) {
                         //If the user don't give us a number in the cost.
-                        JOptionPane.showMessageDialog(null, "The cost must be a number", "Error!", HEIGHT);
+                        JOptionPane.showMessageDialog(null, "The cost must be a number", "Error!", JOptionPane.WARNING_MESSAGE);
                     }
                 } catch (CostManagerException e) {
-                    JOptionPane.showMessageDialog(null, "You need write description", "Error!", HEIGHT);
+                    JOptionPane.showMessageDialog(null, "You need write description", "Error!", JOptionPane.WARNING_MESSAGE);
                 }
 
             }

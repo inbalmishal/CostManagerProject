@@ -149,10 +149,8 @@ public class ViewModel implements IViewModel {
         }, item[0]);
         try {
             f.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
         }
         return item[0];
 
@@ -176,10 +174,8 @@ public class ViewModel implements IViewModel {
         }, item[0]);
         try {
             f.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
         }
         return item[0];
 
@@ -203,10 +199,8 @@ public class ViewModel implements IViewModel {
         }, item[0]);
         try {
             f.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
         }
         return item[0];
 
@@ -230,10 +224,8 @@ public class ViewModel implements IViewModel {
         }, balance[0]);
         try {
             f.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
         }
         return balance[0];
 
@@ -257,11 +249,55 @@ public class ViewModel implements IViewModel {
     }, item[0]);
         try {
         f.get();
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    } catch (ExecutionException e) {
-        e.printStackTrace();
+    } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
     }
+        return item[0];
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ArrayList<CostOrIncome> getAllCosts() {
+        final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    item[0] = model.getAllCosts();
+                }catch(CostManagerException e){
+                    showBadMessage(e.getMessage());
+                }
+            }
+        }, item[0]);
+        try {
+            f.get();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
+        }
+        return item[0];
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ArrayList<CostOrIncome> getAllIncomes() {
+        final ArrayList<CostOrIncome>[] item = new ArrayList[1];
+        Future<ArrayList<CostOrIncome>> f = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    item[0] = model.getAllIncomes();
+                }catch(CostManagerException e){
+                    showBadMessage(e.getMessage());
+                }
+            }
+        }, item[0]);
+        try {
+            f.get();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
+        }
         return item[0];
     }
 
@@ -283,10 +319,8 @@ public class ViewModel implements IViewModel {
         }, categories[0]);
         try {
             f.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            showBadMessage(e.getMessage());
         }
         return categories[0];
     }

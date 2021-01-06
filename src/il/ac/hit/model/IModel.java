@@ -61,21 +61,33 @@ public interface IModel {
     ArrayList<CostOrIncome> getAllCostsAndIncomesBetweenDates(Date from, Date to) throws CostManagerException;
 
     /**
-     * This method calculate the balance in my DB.
-     * @return The balance in my DB.
+     * This method calculate the balance in the DB.
+     * @return The balance in the DB.
      * @throws CostManagerException Problem with the DB.
      */
     double getTheBalance() throws CostManagerException;
     /**
      * This method get from the DB all the costs and incomes.
-     * @return Array list with all costs and incomes in my DB.
+     * @return Array list with all costs and incomes in the DB.
      * @throws CostManagerException Problem with the DB.
      */
     ArrayList<CostOrIncome> getAllCostsAndIncomes() throws CostManagerException;
+    /**
+     * This method get from the DB all the costs.
+     * @return Array list with all costs in the DB.
+     * @throws CostManagerException Problem with the DB.
+     */
+    ArrayList<CostOrIncome> getAllCosts() throws CostManagerException;
+    /**
+     * This method get from the DB all the incomes.
+     * @return Array list with all incomes in the DB.
+     * @throws CostManagerException Problem with the DB.
+     */
+    ArrayList<CostOrIncome> getAllIncomes() throws CostManagerException;
 
     /**
      * This method get from the DB all the categories.
-     * @return Array list with all categories in my DB.
+     * @return Array list with all categories in the DB.
      * @throws CostManagerException Problem with the DB.
      */
     ArrayList<Category> getAllCategories() throws CostManagerException;
