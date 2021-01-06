@@ -1,7 +1,11 @@
 <component name="libraryTable">
   <library name="derby">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../inter/derby/lib/derby.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../inter/derby/lib/derby.jar!/" />
+      <root url="jar://C:/Apache/db-derby-10.14.2.0-bin/lib/derby.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jdatepicker-1.3.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Chart Libraries/jcommon-1.0.23.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/Chart Libraries/jfreechart-1.0.19.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
