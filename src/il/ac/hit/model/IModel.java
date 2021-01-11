@@ -92,10 +92,4 @@ public interface IModel {
      */
     ArrayList<Category> getAllCategories() throws CostManagerException;
 
-    /**
-     * This method open at the beginning of the application running and create the tables and default categories,
-     * but only if the tables and categories not exists before.
-     * @throws CostManagerException Problem with the DB.
-     */
-    void createDB()throws CostManagerException;
 }

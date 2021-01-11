@@ -17,6 +17,7 @@ public class DerbyDBModel implements IModel {
      * @throws CostManagerException Problem with the connection to the db driver.
      */
     public DerbyDBModel() throws CostManagerException {
+        createDB();
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
@@ -573,10 +574,11 @@ public class DerbyDBModel implements IModel {
     }
 
     /**
-     * {@inheritDoc}
+     * This method open at the beginning of the application running and create the tables and default categories,
+     * but only if the tables and categories not exists before.
+     * @throws CostManagerException Problem with the DB.
      */
-    @Override
-    public void createDB() throws CostManagerException {
+    private void createDB() throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
         try {
