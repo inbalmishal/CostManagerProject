@@ -184,8 +184,8 @@ public class AddCostOrIncomeFrame extends JFrame {
                     try {
                         cost = Double.parseDouble(tfCost.getText());
 
-                    /*Take from the user the date.
-                    if no date inserted a message will be displayed*/
+                        /*Take from the user the date.
+                        if no date inserted a message will be displayed*/
                         Date date;
                         try {
                             date = new SimpleDateFormat("dd-MM-yyyy").parse(datePicker.getDatePicker().getJFormattedTextField().getText());
