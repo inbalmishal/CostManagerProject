@@ -49,12 +49,12 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -79,17 +79,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (Exception e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
         return max;
@@ -120,12 +120,12 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -149,17 +149,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
 
@@ -191,12 +191,12 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -220,17 +220,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -260,12 +260,12 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -355,17 +355,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
         return balance;
@@ -403,17 +403,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
         return items;
@@ -450,17 +450,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
         result = new ArrayList<>();
@@ -504,17 +504,17 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
         result = new ArrayList<>();
@@ -557,27 +557,22 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (rs != null) try {
                 rs.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
         return categories;
     }
 
-    /**
-     * This method open at the beginning of the application running and create the tables and default categories,
-     * but only if the tables and categories not exists before.
-     * @throws CostManagerException Problem with the DB.
-     */
     private void createDB() throws CostManagerException {
         Connection connection = null;
         Statement statement = null;
@@ -604,12 +599,12 @@ public class DerbyDBModel implements IModel {
             if (statement != null) try {
                 statement.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
             if (connection != null) try {
                 connection.close();
             } catch (SQLException e) {
-                throw new CostManagerException(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
